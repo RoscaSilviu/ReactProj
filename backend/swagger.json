@@ -1,0 +1,56 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Proiect Final API",
+      "description": "API pentru autentificare"
+    },
+    "host": "localhost:5000",
+    "paths": {
+      "/signup": {
+        "post": {
+          "summary": "Înregistrare utilizator",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "user",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Utilizator înregistrat cu succes" }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "summary": "Autentificare utilizator",
+          "parameters": [
+            {
+              "in": "body",
+              "name": "user",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": { "description": "Autentificare reușită" }
+          }
+        }
+      }
+    }
+  }
+  
