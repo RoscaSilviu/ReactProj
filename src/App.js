@@ -5,7 +5,7 @@ import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
 import Services from './components/Services';
-import Login from './components/Auth/Login';
+import Login from './components/Auth/Login/Login';
 import Signup from './components/Auth/Signup';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
