@@ -12,7 +12,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const App = () => {
   return (
-    <GoogleOAuthProvider clientId="155818115709-uamss5h76ek61hb15je749s6brs1deui.apps.googleusercontent.com"> {/* Înlocuiește cu Client ID-ul tău */}
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <AuthProvider>
         <Router>
           <NavbarWrapper />
