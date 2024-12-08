@@ -8,27 +8,31 @@ import Services from './components/Services';
 import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <NavbarWrapper />
-        <AutoLogin />
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <GoogleOAuthProvider clientId="155818115709-uamss5h76ek61hb15je749s6brs1deui.apps.googleusercontent.com"> {/* Înlocuiește cu Client ID-ul tău */}
+      <AuthProvider>
+        <Router>
+          <NavbarWrapper />
+          <AutoLogin />
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 };
 
+// Componentă pentru redirecționare automată
 const AutoLogin = () => {
   const navigate = useNavigate();
   const location = useLocation();
