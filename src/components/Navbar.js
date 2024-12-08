@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,19 +13,42 @@ const Navbar = () => {
   };
 
   return (
-    <nav>
-      <ul>
-        <li><Link to="/home">Home</Link></li>
-        <li><Link to="/about">About</Link></li>
-        <li><Link to="/services">Services</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
-        <li>
-          {/* Buton pentru Sign Out */}
-          <button onClick={handleSignOut}>
-            Sign Out
-          </button>
-        </li>
-      </ul>
+<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <Link to="/home" className="navbar-brand">Meowkanic</Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link to="/home" className="nav-link active">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/about" className="nav-link">About</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/services" className="nav-link">Services</Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/contact" className="nav-link">Contact</Link>
+            </li>
+            <li className="nav-item">
+              <button className="btn btn-danger" onClick={handleSignOut}>
+                Sign Out
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 };

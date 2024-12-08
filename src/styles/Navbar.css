@@ -1,0 +1,32 @@
+
+.navbar {
+    border-bottom: 2px solid #fff; 
+  }
+  
+  .navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #f8f9fa !important;
+  }
+  
+  .nav-link {
+    font-size: 1.1rem;
+    color: #f8f9fa !important;
+  }
+  
+  .nav-link:hover {
+    color: #f1c40f !important;
+  }
+  
+  .btn-danger {
+    font-weight: bold;
+    padding: 5px 20px;
+    padding-top: 20px;
+    background-color: #e71c3c;
+    border: none;
+  }
+  
+  .btn-danger:hover {
+    background-color: #c0392b;
+  }
+  
