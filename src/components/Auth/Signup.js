@@ -43,49 +43,63 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <h1>Înregistrează-te</h1>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Parolă</label>
-          <input
-            type="password"
-            placeholder="Parola"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Confirmă Parola</label>
-          <input
-            type="password"
-            placeholder="Confirmă Parola"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Înregistrează-te</button>
-      </form>
-
-      {/* Buton pentru navigare către pagina de Login */}
-      <p>
-        Ai deja un cont?{' '}
-        <button onClick={() => navigate('/login')}>Conectează-te aici</button>
-      </p>
+    <div className="container mt-5">
+    <div className="row justify-content-center">
+      <div className="col-md-6">
+        <h1 className="text-center mb-4">Înregistrează-te</h1>
+        {errorMessage && <p className="text-danger text-center">{errorMessage}</p>}
+        <form onSubmit={handleSubmit} className="border p-4 rounded shadow">
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">Parolă</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Parola"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="confirmPassword" className="form-label">Confirmă Parola</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirmă Parola"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="form-control"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">Înregistrează-te</button>
+        </form>
+        <p className="text-center mt-3">
+          Ai deja un cont?{' '}
+          <button
+            onClick={() => navigate('/login')}
+            className="btn btn-link text-decoration-none"
+          >
+            Conectează-te aici
+          </button>
+        </p>
+      </div>
     </div>
+  </div>
+  
   );
 };
 
