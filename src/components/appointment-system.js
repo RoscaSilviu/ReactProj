@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
+
 const AppointmentScheduler = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    mechanic: null,
+    userId: localStorage.getItem('userId'),
+    mechanic: null,  // Va conține doar numele mecanicului
     date: null,
     time: '',
     carBrand: '',
@@ -29,7 +31,7 @@ const AppointmentScheduler = () => {
   const handleMechanicSelect = (mechanic) => {
     setFormData({
       ...formData,
-      mechanic: mechanic,
+      mechanic: mechanic.name,  // Stocăm doar numele mecanicului
     });
   };
 
@@ -51,7 +53,7 @@ const AppointmentScheduler = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:5000/appointments', {
+      const response = await fetch('http://localhost:5000/create-appointments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,12 +61,15 @@ const AppointmentScheduler = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
         setStep(4); // Success step
+      } else {
+        const errorData = await response.json();
+        console.error('Server Error:', errorData);
       }
     } catch (error) {
-      console.error('Error miau miau:', error);
+      console.error('Error:', error);
     }
   };
 
@@ -82,10 +87,10 @@ const AppointmentScheduler = () => {
                     <h5>{mechanic.name}</h5>
                     <p>{mechanic.specialization}</p>
                     <button
-                      className={`btn ${formData.mechanic?.id === mechanic.id ? 'btn-success' : 'btn-primary'}`}
+                      className={`btn ${formData.mechanic === mechanic.name ? 'btn-success' : 'btn-primary'}`}
                       onClick={() => handleMechanicSelect(mechanic)}
                     >
-                      {formData.mechanic?.id === mechanic.id ? 'Selectat' : 'Selectează'}
+                      {formData.mechanic === mechanic.name ? 'Selectat' : 'Selectează'}
                     </button>
                   </div>
                 </div>
@@ -106,7 +111,7 @@ const AppointmentScheduler = () => {
             {formData.date && (
               <div className="mb-3">
                 <h5>Selectați Ora</h5>
-                {formData.mechanic && formData.mechanic.availableSlots.map((time) => (
+                {formData.mechanic && mechanics.find(m => m.name === formData.mechanic)?.availableSlots.map((time) => (
                   <button
                     key={time}
                     className={`btn me-2 ${formData.time === time ? 'btn-success' : 'btn-outline-primary'}`}
@@ -173,8 +178,7 @@ const AppointmentScheduler = () => {
           <div>
             <h3 className="mb-3">Confirmare Programare</h3>
             <div className="mb-3">
-              <p><strong>Mecanic:</strong> {formData.mechanic?.name}</p>
-              <p><strong>Specializare:</strong> {formData.mechanic?.specialization}</p>
+              <p><strong>Mecanic:</strong> {formData.mechanic}</p> {/* Afișăm doar numele */}
               <p><strong>Data:</strong> {formData.date?.toLocaleDateString()}</p>
               <p><strong>Ora:</strong> {formData.time}</p>
               <p><strong>Mașină:</strong> {formData.carBrand} {formData.carModel}</p>

@@ -40,8 +40,13 @@ const Login = () => {
       if (rememberMe) {
         localStorage.setItem('rememberedEmail', email);
         localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userId', data.user.id);
+        console.log('User:', data.user.id);
+
       } else {
         localStorage.removeItem('rememberedEmail');
+        localStorage.setItem('userId', data.user.id);
+        console.log('User:', data.user.id);
       }
       navigate('/home');
     } else {

@@ -10,7 +10,7 @@ import Signup from './components/Auth/Signup';
 import Appointment from './components/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import AppointmentManagement from './components/User-appointments';
 const App = () => {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
@@ -26,7 +26,9 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/appointment" element={<Appointment/>} />
+            <Route path="/create-appointment" element={<Appointment/>} />
+            <Route path="/manage-appointments" element={<AppointmentManagement />} />
+
           </Routes>
         </Router>
       </AuthProvider>
