@@ -9,6 +9,38 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+const { Appointment } = require('./models');
+
+// Endpoint pentru crearea unei programări
+app.post('/appointments', async (req, res) => {
+  const {
+    userId,
+    mechanic,
+    date,
+    time,
+    carBrand,
+    carModel,
+    year,
+    description,
+  } = req.body;
+
+  try {
+    const appointment = await Appointment.create({
+      userId,
+      mechanic,
+      date,
+      time,
+      carBrand,
+      carModel,
+      year,
+      description,
+    });
+
+    res.status(201).json({ message: 'Programare creată cu succes', appointment });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 const { User } = require('./models');
 

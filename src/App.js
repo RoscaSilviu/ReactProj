@@ -7,6 +7,7 @@ import Contact from './components/Contact';
 import Services from './components/Services';
 import Login from './components/Auth/Login/Login';
 import Signup from './components/Auth/Signup';
+import Appointment from './components/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -25,6 +26,7 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/appointment" element={<Appointment/>} />
           </Routes>
         </Router>
       </AuthProvider>
