@@ -89,7 +89,8 @@ const AppointmentManagement = () => {
   // Delete appointment
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/appointments/${selectedAppointment.id}`, {
+      const userId = localStorage.getItem('userId');
+      const response = await fetch(`http://localhost:5000/appointments/${selectedAppointment.id}?userId=${userId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('authToken')}`

@@ -24,7 +24,6 @@ const App = () => {
             <Route path="/signup" element={<Signup />} />
             <Route path="/home" element={<Home />} />
             <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/create-appointment" element={<Appointment/>} />
             <Route path="/manage-appointments" element={<AppointmentManagement />} />
@@ -53,11 +52,11 @@ const AutoLogin = () => {
 
 // Wrapper pentru afișarea condiționată a Navbar
 const NavbarWrapper = () => {
-  const { isAuthenticated } = useAuth();
+  //const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   // Navbarul nu va fi afișat pe rutele /login și /signup
-  if (!isAuthenticated || location.pathname === '/login' || location.pathname === '/signup') {
+  if (location.pathname === '/login' || location.pathname === '/signup') {
     return null;
   }
 

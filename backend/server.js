@@ -72,6 +72,7 @@ app.put('/appointments/:id', async (req, res) => {
       }
     });
 
+    console.log('Appointment:', appointment);
     if (!appointment) {
       return res.status(404).json({ message: 'Appointment not found' });
     }
@@ -92,19 +93,18 @@ app.put('/appointments/:id', async (req, res) => {
 // Delete appointment
 app.delete('/appointments/:id', async (req, res) => {
   const { id } = req.params;
-
+  const { userId } = req.query;
   try {
     const appointment = await Appointment.findOne({
       where: {
         id,
-        userId: req.user.id // Ensure users can only delete their own appointments
+        userId: userId 
       }
     });
 
     if (!appointment) {
       return res.status(404).json({ message: 'Appointment not found' });
     }
-
     await appointment.destroy();
     res.json({ message: 'Appointment deleted successfully' });
   } catch (error) {
