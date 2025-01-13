@@ -6,7 +6,7 @@ const About = () => {
   const [index, setIndex] = useState(0);
 
   const mechanics = [
-    { id: 1, name: 'Ion Popescu', specialization: 'Motor și Transmisie', image: 'https://via.placeholder.com/150', rating: 4.8 },
+    { id: 1, name: 'Ion Popescu', specialization: 'Motor și Transmisie', image: 'url(./HomeCars.png)', rating: 4.8 },
     { id: 2, name: 'Maria Ionescu', specialization: 'Sisteme Electrice', image: 'https://via.placeholder.com/150', rating: 4.9 },
     { id: 3, name: 'Vasile Dănuț', specialization: 'Caroserie și vopsitorie', image: 'https://via.placeholder.com/150', rating: 4.7 },
     { id: 4, name: 'Gabriela Stanciu', specialization: 'Diagnosticare auto', image: 'https://via.placeholder.com/150', rating: 5.0 },

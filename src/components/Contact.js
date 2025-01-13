@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import emailjs from 'emailjs-com';
+
 const userID = process.env.REACT_APP_EMAILJS_USER_ID;
 const serviceID = process.env.REACT_APP_EMAILJS_SERVICE_ID;
 const templateID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -21,61 +23,74 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Configurare pentru trimiterea emailului
     emailjs
       .send(
-        serviceID, // ID-ul serviciului
-        templateID, // ID-ul template-ului
-        formData,           // Datele formularului
-        userID      // ID-ul utilizatorului
+        serviceID,
+        templateID,
+        formData,
+        userID
       )
       .then(
         (result) => {
-          console.log('Email trimis cu succes:', result.text);
-          alert('Email trimis cu succes!');
+          console.log('Email sent successfully:', result.text);
+          alert('Email sent successfully!');
         },
         (error) => {
-          console.log('Eroare la trimiterea emailului:', error.text);
-          alert('A apărut o eroare la trimiterea emailului.');
+          console.log('Error sending email:', error.text);
+          alert('There was an error sending the email.');
         }
       );
   };
 
   return (
-    <div>
-      <h3>Contactează-ne</h3>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Numel:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <h3 className="text-center mb-4">Contactează-ne</h3>
+          <form onSubmit={handleSubmit} className="border p-4 rounded shadow">
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">Numele</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Introduceti numele"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Introduceti emailul"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="message" className="form-label">Mesaj</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Scrie mesajul tau"
+                value={formData.message}
+                onChange={handleChange}
+                required
+                className="form-control"
+                rows="4"
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-100">Trimite</button>
+          </form>
         </div>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Mesaj:</label>
-          <textarea
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Trimite</button>
-      </form>
+      </div>
     </div>
   );
 };
