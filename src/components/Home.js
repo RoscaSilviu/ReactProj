@@ -1,7 +1,7 @@
-// src/pages/Home.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import HomeImage from '../HomeCars.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,19 +18,40 @@ const Home = () => {
         <p>Explore our services and schedule an appointment now!</p>
       </header>
 
-      <div className="text-center mb-5">
-      <div
-        style={{
-          backgroundImage: 'url(./HomeCars.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '500px',
-          borderRadius: '0.25rem',
-          boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-        }}
-        className="img-fluid rounded shadow"
-      ></div>
-    </div>
+      {/* Image container with text overlay */}
+      <div className="text-center mb-5 position-relative">
+        <div
+          style={{
+            backgroundImage: `url(${HomeImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            height: '500px',
+            borderRadius: '0.25rem',
+            boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+            position: 'relative',
+          }}
+          className="img-fluid rounded shadow"
+        >
+          {/* Text overlay */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              color: 'white',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adds a semi-transparent background
+              padding: '20px',
+              borderRadius: '5px',
+              textAlign: 'center',
+              width: '80%',
+            }}
+          >
+            <h2>Premium Car Service</h2>
+            <p>Book an appointment today for top-quality vehicle maintenance.</p>
+          </div>
+        </div>
+      </div>
 
       <div className="text-center mb-5">
         <button onClick={handleButtonClick} className="btn btn-primary btn-lg shadow">
@@ -70,7 +91,7 @@ const Home = () => {
 
       <footer className="bg-light py-3 mt-5">
         <div className="container text-center">
-          <p>&copy; 2025 Our Service. Made By Silviu .  All rights reserved.</p>
+          <p>&copy; 2025 Our Service. Made By Silviu. All rights reserved.</p>
           <ul className="list-inline">
             <li className="list-inline-item">Privacy Policy</li>
             <li className="list-inline-item">Terms of Service</li>

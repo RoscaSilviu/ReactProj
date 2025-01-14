@@ -11,6 +11,8 @@ import Appointment from './components/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/User-appointments';
+import './App.css';
+
 const App = () => {
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
