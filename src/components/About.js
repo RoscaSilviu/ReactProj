@@ -3,16 +3,16 @@ import './About.css';
 import car2 from '../car2.jpg'; 
 import car4 from '../car4.jpg';
 import car5 from '../car5.jpg';
-import car6 from '../car6.PNG';
+import car6 from '../stoian.webp';
 
 const About = () => {
   const [index, setIndex] = useState(0);
 
   const mechanics = [
-    { id: 1, name: 'Ion Popescu', specialization: 'Motor și Transmisie', image: car2, rating: 4.8 },
-    { id: 2, name: 'Maria Ionescu', specialization: 'Sisteme Electrice', image: car4, rating: 4.9 },
-    { id: 3, name: 'Vasile Dănuț', specialization: 'Caroserie ', image: car5, rating: 4.7 },
-    { id: 4, name: 'Gabriel Stanciu', specialization: 'Diagnosticare auto', image: car6, rating: 5.0 },
+    { id: 1, name: 'Vasile.', specialization: 'Motor și Transmisie', image: car2, rating: 4.8 },
+    { id: 2, name: 'Meowana Ionescu', specialization: 'Sisteme Electrice', image: car4, rating: 4.9 },
+    { id: 3, name: 'Meowgurel Meownel', specialization: 'Reparatii Tigai', image: car5, rating: 5.1 },
+    { id: 4, name: 'Mâțu Stoian', specialization: 'Sisteme Audio', image: car6, rating: 5.0 },
   ];
 
   const handlePrevClick = () => {
