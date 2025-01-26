@@ -7,11 +7,7 @@ import './Navbar.css';
 const Navbar = () => {
   const navigate = useNavigate();
   const { setIsAuthenticated } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [isMenuOpen] = React.useState(false);
 
   const handleSignOut = () => {
     localStorage.removeItem('authToken');

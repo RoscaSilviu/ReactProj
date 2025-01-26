@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Mechanics.css';
 
 const MechanicsCRUD = () => {
   const [mechanics, setMechanics] = useState([]);
@@ -18,7 +19,6 @@ const MechanicsCRUD = () => {
   const fetchMechanics = async () => {
     const response = await fetch('http://localhost:5000/mechanics');
     const data = await response.json();
-    
     setMechanics(data);
   };
 
@@ -63,29 +63,29 @@ const MechanicsCRUD = () => {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-    },
+      },
     });
     fetchMechanics();
   };
 
   return (
-    <div className="container mt-5">
-      <h2>Manage Mechanics</h2>
-      
-      <button 
-        className="btn btn-primary mb-3"
-        onClick={() => setShowForm(!showForm)}
-      >
-        {showForm ? 'Cancel' : 'Add New Mechanic'}
-      </button>
+    <div className="mechanics-crud-container">
+      <div className="crud-header">
+        <h2>Manage Mechanics</h2>
+        <button 
+          className="add-mechanic-btn"
+          onClick={() => setShowForm(!showForm)}
+        >
+          {showForm ? 'Cancel' : 'Add New Mechanic'}
+        </button>
+      </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="card p-3 mb-4">
-          <div className="form-group">
+        <form onSubmit={handleSubmit} className="mechanic-form-card">
+          <div className="form-input-group">
             <label>Name</label>
             <input
               type="text"
-              className="form-control"
               name="name"
               value={formData.name}
               onChange={handleChange}
@@ -93,11 +93,10 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-input-group">
             <label>Specialization</label>
             <input
               type="text"
-              className="form-control"
               name="specialization"
               value={formData.specialization}
               onChange={handleChange}
@@ -105,11 +104,10 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-input-group">
             <label>Image URL</label>
             <input
               type="url"
-              className="form-control"
               name="image"
               value={formData.image}
               onChange={handleChange}
@@ -117,11 +115,10 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-input-group">
             <label>Rating</label>
             <input
               type="number"
-              className="form-control"
               name="rating"
               min="0"
               max="5"
@@ -132,11 +129,10 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-input-group">
             <label>Available Slots (comma-separated)</label>
             <input
               type="text"
-              className="form-control"
               name="availableSlots"
               value={formData.availableSlots}
               onChange={handleChange}
@@ -144,12 +140,13 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-success">
+          <button type="submit" className="add-mechanic-btn">
             Add Mechanic
           </button>
         </form>
       )}
-      <table className="table">
+
+      <table className="mechanics-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -163,7 +160,10 @@ const MechanicsCRUD = () => {
               <td>{mechanic.name}</td>
               <td>{mechanic.specialization}</td>
               <td>
-                <button className="btn btn-danger" onClick={() => handleDelete(mechanic.id)}>
+                <button 
+                  className="delete-btn" 
+                  onClick={() => handleDelete(mechanic.id)}
+                >
                   Delete
                 </button>
               </td>

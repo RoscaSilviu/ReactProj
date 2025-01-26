@@ -10,7 +10,7 @@ import Appointment from './components/Pages/Appointments/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/Pages/Appointments/User-appointments';
-import MechanicsCRUD from './components/Mechanics';
+import MechanicsCRUD from './components/Pages/Mechanics/Mechanics';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
