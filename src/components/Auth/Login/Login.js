@@ -23,52 +23,55 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    sessionStorage.removeItem('authToken');
+
     if (!email.includes('@') || password.length < 6) {
       alert('Email invalid sau parolă prea scurtă!');
       return;
     }
 
-    const response = await fetch('http://localhost:5000/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-      setIsAuthenticated(true);
-      const data = await response.json();
-      if (rememberMe) {
-        localStorage.setItem('rememberedEmail', email);
-        localStorage.setItem('authToken', data.token);
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        setIsAuthenticated(true);  // Update auth state immediately
+        
+        // Storage handling
+        if (rememberMe) {
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('rememberedEmail', email);
+        } else {
+          sessionStorage.setItem('authToken', data.token);
+          localStorage.removeItem('rememberedEmail');
+        }
+        
         localStorage.setItem('userId', data.user.id);
-        console.log('User:', data.user.id);
-
+        navigate(location.state?.from || '/home'); 
       } else {
-        localStorage.removeItem('rememberedEmail');
-        localStorage.setItem('userId', data.user.id);
-        console.log('User:', data.user.id);
+        alert('Invalid credentials!');
       }
-      navigate('/home');
-    } else {
-      alert('Email sau parolă incorectă!');
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
     }
   };
-
   const handleGoogleLoginSuccess = (credentialResponse) => {
     try {
       const decoded = jwtDecode(credentialResponse.credential);
-      console.log('Google Login Succes:', decoded);
-
-      // Poți salva token-ul și email-ul în localStorage
-      localStorage.setItem('googleAuthToken', credentialResponse.credential);
-      localStorage.setItem('rememberedEmail', decoded.email); // Email-ul utilizatorului
+      
+        localStorage.setItem('googleAuthToken', credentialResponse.credential);
+      localStorage.setItem('rememberedEmail', decoded.email);
       setIsAuthenticated(true);
-
-      // Redirecționăm utilizatorul
       navigate('/home');
     } catch (error) {
-      console.error('Eroare la decodarea token-ului JWT:', error);
-      alert('Eroare la autentificarea cu Google.');
+      console.error('JWT decode error:', error);
+      alert('Google authentication failed');
     }
   };
 

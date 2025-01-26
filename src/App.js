@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
-import Services from './components/Services';
 import Login from './components/Auth/Login/Login';
 import Signup from './components/Auth/Signup';
 import Appointment from './components/appointment-system';
@@ -12,6 +11,18 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/User-appointments';
 import './App.css';
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
+
 
 const App = () => {
   return (
@@ -24,12 +35,33 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/create-appointment" element={<Appointment/>} />
-            <Route path="/manage-appointments" element={<AppointmentManagement />} />
-
+            
+            {/* Protected routes */}
+            <Route path="/home" element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }/>
+            <Route path="/about" element={
+              <ProtectedRoute>
+                <About />
+              </ProtectedRoute>
+            }/>
+            <Route path="/contact" element={
+              <ProtectedRoute>
+                <Contact />
+              </ProtectedRoute>
+            }/>
+            <Route path="/create-appointment" element={
+              <ProtectedRoute>
+                <Appointment />
+              </ProtectedRoute>
+            }/>
+            <Route path="/manage-appointments" element={
+              <ProtectedRoute>
+                <AppointmentManagement />
+              </ProtectedRoute>
+            }/>
           </Routes>
         </Router>
       </AuthProvider>

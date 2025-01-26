@@ -1,13 +1,16 @@
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth(); 
 
   const handleSignOut = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('rememberedEmail');
+    setIsAuthenticated(false); 
     alert('Te-ai deconectat cu succes!');
     navigate('/login');
   };
