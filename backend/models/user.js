@@ -4,6 +4,11 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
+    role: {
+      type: DataTypes.ENUM('user', 'admin'),
+      defaultValue: 'user',
+      allowNull: false
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

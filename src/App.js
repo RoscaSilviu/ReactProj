@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Home from './components/Home';
-import About from './components/About';
-import Contact from './components/Contact';
+import Navbar from './components/NavigationBar/Navbar';
+import Home from './components/Pages/Home/Home';
+import About from './components/Pages/About/About';
+import Contact from './components/Pages/Contact/Contact';
 import Login from './components/Auth/Login/Login';
-import Signup from './components/Auth/Signup';
-import Appointment from './components/appointment-system';
+import Signup from './components/Auth/Signup/Signup';
+import Appointment from './components/Pages/Appointments/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import AppointmentManagement from './components/User-appointments';
+import AppointmentManagement from './components/Pages/Appointments/User-appointments';
+import MechanicsCRUD from './components/Mechanics';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -35,7 +36,7 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            
+            <Route path="/MechanicsCRUD" element={<MechanicsCRUD/>} />
             {/* Protected routes */}
             <Route path="/home" element={
               <ProtectedRoute>

@@ -13,9 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id',
       },
     },
-    mechanic: {
-      type: DataTypes.STRING,
+    mechanicId: {  
+      type: DataTypes.INTEGER,
       allowNull: false,
+      references: {
+        model: 'Mechanics',
+        key: 'id',
+      },
     },
     date: {
       type: DataTypes.DATEONLY,
@@ -45,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Appointment.associate = (models) => {
     Appointment.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
+    Appointment.belongsTo(models.Mechanic, { foreignKey: 'mechanicId' });
   };
 
   return Appointment;

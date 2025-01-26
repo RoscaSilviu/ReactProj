@@ -39,7 +39,7 @@ const Signup = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify({ email: email.toLowerCase().trim(), password }),
+        body: JSON.stringify({ email: email.toLowerCase().trim(), password , role: 'user' }),
       });
 
       const data = await response.json();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import HomeImage from '../HomeCars.png';
+import HomeImage from '../../../HomeCars.png';
 
 const Home = () => {
   const navigate = useNavigate();

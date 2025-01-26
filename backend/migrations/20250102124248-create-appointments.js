@@ -2,61 +2,44 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Appointments', {
+    await queryInterface.createTable('Mechanics', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        autoIncrement: true
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users', // Referință la modelul Users
-          key: 'id',
-        },
-      },
-      mechanic: {
+      name: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      date: {
-        type: Sequelize.DATEONLY,
-        allowNull: false,
-      },
-      time: {
+      specialization: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      carBrand: {
+      image: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      carModel: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      rating: {
+        type: Sequelize.FLOAT,
+        allowNull: false
       },
-      year: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      availableSlots: {
+        type: Sequelize.JSON,
+        allowNull: false
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
-      },
+        allowNull: false
+      }
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Appointments');
+  async down(queryInterface) {
+    await queryInterface.dropTable('Mechanics');
   }
 };

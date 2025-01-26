@@ -7,7 +7,7 @@ const rateLimit = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
-const { Appointment, User } = require('./models');
+const { Appointment, User , Mechanic } = require('./models');
 require('dotenv').config({ path: '../.env' });
 
 const app = express();
@@ -29,9 +29,10 @@ const limiter = rateLimit({
 app.use(limiter);
 
 const authenticate = async (req, res, next) => {
+  console.log('authenticate');
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
-
+  console.log(token);
   if (!token) return res.status(401).json({ error: 'Access denied' });
 
   try {
@@ -115,7 +116,8 @@ app.post('/signup', async (req, res) => {
     console.log(hashedPassword);
     const user = await User.create({
       email: req.body.email,
-      password: hashedPassword
+      password: hashedPassword,
+      role : 'user'
     });
     
     res.status(201).json({
@@ -180,6 +182,50 @@ app.post('/login', async (req, res) => {
   }
 });
 
+app.get('/mechanics', async (req, res) => {
+  console.log('get mechanics');
+  const mechanics = await Mechanic.findAll();
+  res.json(mechanics);
+});
+
+app.post('/mechanics',authenticate, async (req, res) => {
+  console.log(req.body);
+  console.log("post mechanics");
+  try {
+    const requiredFields = ['name', 'specialization', 'image', 'rating', 'availableSlots'];
+    for (const field of requiredFields) {
+      if (!req.body[field]) {
+        return res.status(400).json({ error: `Missing required field: ${field}` });
+      }
+    }
+
+    if (req.body.rating < 0 || req.body.rating > 5) {
+      return res.status(400).json({ error: 'Rating must be between 0 and 5' });
+    }
+
+    const mechanic = await Mechanic.create({
+      name: req.body.name,
+      specialization: req.body.specialization,
+      image: req.body.image,
+      rating: parseFloat(req.body.rating),
+      availableSlots: Array.isArray(req.body.availableSlots) 
+        ? req.body.availableSlots 
+        : req.body.availableSlots.split(',')
+    });
+    
+    res.status(201).json(mechanic);
+  } catch (error) {
+    console.error('Error creating mechanic:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.delete('/mechanics/:id', authenticate, async (req, res) => {
+  //if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  
+  await Mechanic.destroy({ where: { id: req.params.id } });
+  res.json({ message: 'Mechanic deleted' });
+});
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });

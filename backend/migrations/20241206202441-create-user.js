@@ -9,6 +9,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      role:
+      {
+        type: Sequelize.ENUM('user', 'admin'),
+        defaultValue: 'user',
+        allowNull: false
+      },
       email: {
         type: Sequelize.STRING
       },

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../../../context/AuthContext';
+import { PencilSquare, Trash, ClockHistory, PersonGear } from 'react-bootstrap-icons';
+import './miau.css';
 
 const AppointmentManagement = () => {
   const [appointments, setAppointments] = useState([]);
@@ -135,9 +137,11 @@ const AppointmentManagement = () => {
 
   if (isLoading) {
     return (
-      <div className="container text-center mt-5">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+      <div className="management-container">
+        <div className="loading-overlay">
+          <div className="spinner-grow text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
         </div>
       </div>
     );
@@ -145,44 +149,71 @@ const AppointmentManagement = () => {
 
   if (!isLoading && appointments.length === 0) {
     return (
-      <div className="container text-center mt-5">
-        <h4>Nu există programări</h4>
+      <div className="management-container">
+        <div className="empty-state">
+          <ClockHistory size={48} className="empty-icon" />
+          <h4 className="empty-title">Nu există programări</h4>
+          <p className="empty-subtitle">Momentan nu sunt programări în sistem</p>
+        </div>
       </div>
     );
   }
   return (
-    <div className="container mx-auto p-4 max-w-4xl">
-      <div className="card">
-        <div className="card-header">
-          <h5 className="card-title">Gestionare Programări</h5>
+    <div className="management-container">
+      <div className="management-card">
+        <div className="card-header-primary">
+          <h3 className="management-title">
+            <PersonGear className="header-icon" />
+            Gestionare Programări
+          </h3>
         </div>
+        
         <div className="card-body">
-          <div className="space-y-4">
+          <div className="appointments-list">
             {appointments.map((appointment) => (
-              <div key={appointment.id} className="border rounded-lg p-4 d-flex justify-content-between align-items-start">
-                <div>
-                  <p className="font-weight-bold">{appointment.carBrand} {appointment.carModel} ({appointment.year})</p>
-                  <p className="text-muted">Mecanic: {appointment.mechanic}</p>
-                  <p className="text-muted">
-                    Data: {new Date(appointment.date).toLocaleDateString()} {appointment.time}
-                  </p>
-                  <p className="mt-2">{appointment.description}</p>
+              <div key={appointment.id} className="appointment-card">
+                <div className="appointment-content">
+                  <div className="vehicle-info">
+                    <span className="vehicle-badge">
+                      {appointment.carBrand} {appointment.carModel}
+                    </span>
+                    <span className="year-badge">{appointment.year}</span>
+                  </div>
+                  
+                  <div className="appointment-details">
+                    <div className="detail-item">
+                      <span className="detail-label">Mecanic:</span>
+                      <span className="detail-value">{appointment.mechanic}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Data:</span>
+                      <span className="detail-value">
+                        {new Date(appointment.date).toLocaleDateString('ro-RO')} 
+                        <span className="time-badge">{appointment.time}</span>
+                      </span>
+                    </div>
+                    <div className="detail-item">
+                      <span className="detail-label">Descriere:</span>
+                      <p className="detail-description">{appointment.description}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="space-x-2">
+
+                <div className="appointment-actions">
                   <button 
-                    className="btn btn-outline-primary"
+                    className="btn btn-icon-edit"
                     onClick={() => openEditDialog(appointment)}
                   >
-                    Editează
+                    <PencilSquare size={20} />
                   </button>
                   <button 
-                    className="btn btn-danger"
+                    className="btn btn-icon-delete"
                     onClick={() => {
                       setSelectedAppointment(appointment);
                       setIsDeleteDialogOpen(true);
                     }}
                   >
-                    Șterge
+                    <Trash size={20} />
                   </button>
                 </div>
               </div>
@@ -191,18 +222,28 @@ const AppointmentManagement = () => {
         </div>
       </div>
 
-      {/* Edit Dialog */}
+      {/* Edit Modal */}
       {isEditDialogOpen && (
-        <div className="modal show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Editare Programare</h5>
-                <button type="button" className="btn-close" onClick={() => setIsEditDialogOpen(false)}></button>
-              </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label className="form-label">Marca Mașină</label>
+        <div className="management-modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h4 className="modal-title">
+                <PencilSquare className="modal-icon" />
+                Editare Programare
+              </h4>
+              <button 
+                type="button" 
+                className="btn-close-modal"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="form-grid">
+                <div className="form-group">
+                  <label>Marca Mașină</label>
                   <input
                     className="form-control"
                     name="carBrand"
@@ -210,8 +251,9 @@ const AppointmentManagement = () => {
                     onChange={handleEditInputChange}
                   />
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Model Mașină</label>
+
+                <div className="form-group">
+                  <label>Model Mașină</label>
                   <input
                     className="form-control"
                     name="carModel"
@@ -219,8 +261,9 @@ const AppointmentManagement = () => {
                     onChange={handleEditInputChange}
                   />
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">An Fabricație</label>
+
+                <div className="form-group">
+                  <label>An Fabricație</label>
                   <input
                     className="form-control"
                     name="year"
@@ -229,41 +272,69 @@ const AppointmentManagement = () => {
                     onChange={handleEditInputChange}
                   />
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Descriere Problemă</label>
+
+                <div className="form-group-full">
+                  <label>Descriere Problemă</label>
                   <textarea
                     className="form-control"
                     name="description"
                     value={editForm.description}
                     onChange={handleEditInputChange}
+                    rows="4"
                   />
                 </div>
               </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setIsEditDialogOpen(false)}>Anulează</button>
-                <button className="btn btn-primary" onClick={handleUpdate}>Salvează</button>
-              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
+                Renunță
+              </button>
+              <button 
+                className="btn btn-primary"
+                onClick={handleUpdate}
+              >
+                Salvează modificări
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Delete Dialog */}
+      {/* Delete Modal */}
       {isDeleteDialogOpen && (
-        <div className="modal show d-block" tabIndex="-1">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Confirmare ștergere</h5>
-                <button type="button" className="btn-close" onClick={() => setIsDeleteDialogOpen(false)}></button>
-              </div>
-              <div className="modal-body">
-                <p>Sunteți sigur că doriți să ștergeți această programare? Această acțiune nu poate fi anulată.</p>
-              </div>
-              <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setIsDeleteDialogOpen(false)}>Anulează</button>
-                <button className="btn btn-danger" onClick={handleDelete}>Șterge</button>
-              </div>
+        <div className="management-modal">
+          <div className="modal-content modal-content-warning">
+            <div className="modal-header">
+              <h4 className="modal-title">
+                <Trash className="modal-icon" />
+                Confirmare ștergere
+              </h4>
+            </div>
+
+            <div className="modal-body">
+              <p className="delete-warning-text">
+                Ești sigur că vrei să ștergi această programare? 
+                Această acțiune este permanentă și nu poate fi anulată.
+              </p>
+            </div>
+
+            <div className="modal-footer">
+              <button 
+                className="btn btn-secondary"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
+                Anulează
+              </button>
+              <button 
+                className="btn btn-danger"
+                onClick={handleDelete}
+              >
+                Șterge definitiv
+              </button>
             </div>
           </div>
         </div>
