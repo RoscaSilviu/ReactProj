@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useAuth } from '../context/AuthContext'; 
 
 const AppointmentManagement = () => {
   const [appointments, setAppointments] = useState([]);
@@ -12,32 +13,48 @@ const AppointmentManagement = () => {
     year: '',
     description: ''
   });
+  const { setIsAuthenticated } = useAuth(); 
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Fetch appointments
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const userId = localStorage.getItem('userId'); // Extract userId from localStorage
-  
-      const response = await fetch(`http://localhost:5000/appointments?userId=${userId}`, {
+      const response = await fetch(`http://localhost:5000/appointments`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}` // Authentication token
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
       });
-  
-      if (response.ok) {
-        const data = await response.json();
-        setAppointments(data);
+
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        setIsAuthenticated(false);
+        return;
       }
+
+      if (!response.ok) throw new Error('Failed to fetch appointments');
+
+      const data = await response.json();
+      setAppointments(data);
     } catch (error) {
       console.error('Error fetching appointments:', error);
+      alert('Error loading appointments');
+    } finally {
+      setIsLoading(false);
     }
-  };
-  
+  }, [setIsAuthenticated]);
+
+
   useEffect(() => {
     fetchAppointments();
-  }, []);
+  }, [fetchAppointments]);
 
-  // Handle edit dialog
+  const handleEditInputChange = (e) => {
+    setEditForm({
+      ...editForm,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const openEditDialog = (appointment) => {
     setSelectedAppointment(appointment);
     setEditForm({
@@ -49,66 +66,90 @@ const AppointmentManagement = () => {
     setIsEditDialogOpen(true);
   };
 
-  const handleEditInputChange = (e) => {
-    setEditForm({
-      ...editForm,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  // Update appointment
   const handleUpdate = async () => {
     try {
-        const userId = localStorage.getItem('userId');
-        const response = await fetch(`http://localhost:5000/appointments/${selectedAppointment.id}?userId=${userId}`, {
+      const response = await fetch(
+        `http://localhost:5000/appointments/${selectedAppointment.id}`, 
+        {
           method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`
-        },
-        body: JSON.stringify({
-          ...editForm,
-          year: parseInt(editForm.year, 10)
-        })
-      });
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          },
+          body: JSON.stringify({
+            ...editForm,
+            year: parseInt(editForm.year, 10)
+          })
+        }
+      );
 
-      if (response.ok) {
-        // Update the appointments state after the update
-        setAppointments(prevAppointments =>
-          prevAppointments.map(appointment =>
-            appointment.id === selectedAppointment.id ? { ...appointment, ...editForm } : appointment
-          )
-        );
-        setIsEditDialogOpen(false);
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        setIsAuthenticated(false);
+        return;
       }
+
+      if (!response.ok) throw new Error('Update failed');
+
+      const updatedAppointment = await response.json();
+      setAppointments(prev => prev.map(a => 
+        a.id === selectedAppointment.id ? updatedAppointment : a
+      ));
+      setIsEditDialogOpen(false);
     } catch (error) {
-      console.error('Error updating appointment:', error);
+      console.error('Update error:', error);
+      alert('Error updating appointment');
     }
   };
 
   // Delete appointment
   const handleDelete = async () => {
     try {
-      const userId = localStorage.getItem('userId');
-      const response = await fetch(`http://localhost:5000/appointments/${selectedAppointment.id}?userId=${userId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`
+      const response = await fetch(
+        `http://localhost:5000/appointments/${selectedAppointment.id}`, 
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+          }
         }
-      });
+      );
 
-      if (response.ok) {
-        // Remove the deleted appointment from the state
-        setAppointments(prevAppointments =>
-          prevAppointments.filter(appointment => appointment.id !== selectedAppointment.id)
-        );
-        setIsDeleteDialogOpen(false);
+      if (response.status === 401) {
+        localStorage.removeItem('authToken');
+        setIsAuthenticated(false);
+        return;
       }
+
+      if (!response.ok) throw new Error('Delete failed');
+
+      setAppointments(prev => 
+        prev.filter(a => a.id !== selectedAppointment.id)
+      );
+      setIsDeleteDialogOpen(false);
     } catch (error) {
-      console.error('Error deleting appointment:', error);
+      console.error('Delete error:', error);
+      alert('Error deleting appointment');
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="container text-center mt-5">
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoading && appointments.length === 0) {
+    return (
+      <div className="container text-center mt-5">
+        <h4>Nu există programări</h4>
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <div className="card">

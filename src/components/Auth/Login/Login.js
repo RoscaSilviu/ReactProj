@@ -40,7 +40,7 @@ const Login = () => {
   
       if (response.ok) {
         const data = await response.json();
-        setIsAuthenticated(true);  // Update auth state immediately
+        setIsAuthenticated(true); 
         
         // Storage handling
         if (rememberMe) {
