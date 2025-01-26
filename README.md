@@ -1,8 +1,8 @@
 # Auto Service Appointment Scheduler
 
-This app is meant to be used my users and mechanincs. 
+This app is meant to be used my users and mechanincs.   
 The users can create an account , login , view available mechanics, schedule
-an appointment , view/modify/delete appointments, and get real-time updates on their appointment from the mechanics. 
+an appointment , view/modify/delete appointments, and get real-time updates on their appointment from the mechanics.   
 The mechanics can view all their appointments, mark them as complete or add updates.
 
 ## 🛠 Technologies Used
@@ -40,35 +40,35 @@ The mechanics can view all their appointments, mark them as complete or add upda
 
 ## 📁 Project Folder Structure
 
-ReactProj/
-├── public/
-│ ├── index.html
-│ └── ... (other static assets)
-│
-├── src/
-│ ├── components/
-│ │ ├── Pages
-│ │ ├── Auth
-│ │ └── NavigationBar
-│ │
-│ ├── context
-│ ├── stykes
-│ │
-│ │ 
-│ │
-│ ├── App.js
-│ ├── index.js
-│ │
-│
-├── backend
-│ ├── config/
-│ ├── models/
-│ ├── migrations/
-│ └── server.js
-│
-├── .gitignore
-├── package.json
-└── README.md
+ReactProj/  
+├── public/  
+│ ├── index.html  
+│ └── ... (other static assets)  
+│  
+├── src/  
+│ ├── components/  
+│ │ ├── Pages  
+│ │ ├── Auth  
+│ │ └── NavigationBar  
+│ │  
+│ ├── context  
+│ ├── stykes  
+│ │  
+│ │   
+│ │  
+│ ├── App.js  
+│ ├── index.js  
+│ │  
+│  
+├── backend  
+│ ├── config/  
+│ ├── models/  
+│ ├── migrations/  
+│ └── server.js  
+│  
+├── .gitignore  
+├── package.json  
+└── README.md  
 
 
 ## 🚀 Installation & Setup
@@ -84,11 +84,11 @@ ReactProj/
    ```bash
    git clone https://github.com/RoscaSilviu/ReactProj.git
    cd ReactProj
-2. **Install dependencies**
-   npm install
+2. **Install dependencies**  
+   npm install  
    cd backend; npm install
-3. **Install MySql and configure database**
-4. **Run server and start the app**
-   node server.js 
+3. **Install MySql and configure database**  
+4. **Run server and start the app**  
+   node server.js   
    npm start
 
