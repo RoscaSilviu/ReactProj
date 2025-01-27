@@ -70,16 +70,17 @@ app.get('/appointments', authenticate, async (req, res) => {
 });
 
 app.put('/appointments/:id', authenticate, async (req, res) => {
+  console.log
   try {
     const appointment = await Appointment.findOne({
       where: {
         id: req.params.id,
-        userId: req.user.id
+        //userId: req.user.id
       }
     });
 
     if (!appointment) return res.status(404).json({ error: 'Not found' });
-
+    console.log(req.user);
     await appointment.update(req.body);
     res.json(appointment);
   } catch (error) {
@@ -189,6 +190,7 @@ app.get('/mechanics', async (req, res) => {
 });
 
 app.post('/mechanics',authenticate, async (req, res) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
   console.log(req.body);
   console.log("post mechanics");
   try {
@@ -221,11 +223,111 @@ app.post('/mechanics',authenticate, async (req, res) => {
 });
 
 app.delete('/mechanics/:id', authenticate, async (req, res) => {
-  //if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
+  console.log
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
   
   await Mechanic.destroy({ where: { id: req.params.id } });
   res.json({ message: 'Mechanic deleted' });
 });
+
+app.post('/mechanics/login', async (req, res) => {
+  try {
+    const { name, password } = req.body;
+    console.log(name + " " + password);
+    if (password !== process.env.MECHANIC_UNIVERSAL_PASSWORD) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const mechanic = await Mechanic.findOne({ where: { name } });
+    
+    console.log(mechanic);
+    if (!mechanic) {
+      return res.status(404).json({ error: 'Mechanic not found' });
+    }
+
+    const token = jwt.sign(
+      { id: mechanic.id, role: 'mechanic' },
+      process.env.JWT_SECRET,
+      { expiresIn: '8h' }
+    );
+
+    res.json({ token, mechanic });
+  } catch (error) {
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+
+app.get('/mechanic/appointments/:id', async (req, res) => {
+  try {
+    const appointments = await Appointment.findAll({
+      where: { mechanicId: req.params.id },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'email'], 
+        },
+      ],
+    });
+
+    if (!appointments.length) {
+      return res.status(404).json({ error: 'No appointments found' });
+    }
+
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error('Error fetching mechanic appointments:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Endpoint pentru a actualiza o programare de mecanic
+app.put('/mechanic/appointments/:id', async (req, res) => {
+  try {
+    const appointment = await Appointment.findOne({
+      where: {
+        id: req.params.id,
+        mechanicId: req.mechanic.id,
+      },
+    });
+
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+
+    await appointment.update(req.body);
+
+    res.status(200).json({ message: 'Appointment updated', appointment });
+  } catch (error) {
+    console.error('Error updating mechanic appointment:', error);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Endpoint pentru a șterge o programare de mecanic
+app.delete('/mechanic/appointments/:id', async (req, res) => {
+  try {
+    const appointment = await Appointment.findOne({
+      where: {
+        id: req.params.id,
+        mechanicId: req.mechanic.id,
+      },
+    });
+
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+
+    await appointment.destroy();
+
+    res.status(200).json({ message: 'Appointment deleted' });
+  } catch (error) {
+    console.error('Error deleting mechanic appointment:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Internal server error' });

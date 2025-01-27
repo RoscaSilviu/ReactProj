@@ -11,6 +11,8 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/Pages/Appointments/User-appointments';
 import MechanicsCRUD from './components/Pages/Mechanics/Mechanics';
+import MechanicLogin from './components/Pages/Mechanics/MechanicLogin';
+import MechanicAppointmentManagement from './components/Pages/Mechanics/MechanicsAppointments';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -37,6 +39,8 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/MechanicsCRUD" element={<MechanicsCRUD/>} />
+            <Route path="/MechanicLogin" element={<MechanicLogin/>} />
+            <Route path="/MechanitcAppoinments" element={<MechanicAppointmentManagement/>} />
             {/* Protected routes */}
             <Route path="/home" element={
               <ProtectedRoute>

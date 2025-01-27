@@ -59,10 +59,12 @@ const MechanicsCRUD = () => {
   };
 
   const handleDelete = async (id) => {
+    console.log(localStorage.getItem('authToken'));
     await fetch(`http://localhost:5000/mechanics/${id}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
       },
     });
     fetchMechanics();

@@ -26,7 +26,7 @@ const Login = () => {
 
     sessionStorage.removeItem('authToken');
 
-    if (!email.includes('@') || password.length < 6) {
+    if (!email.includes('@') || password.length < 3) {
       alert('Email invalid sau parolă prea scurtă!');
       return;
     }
@@ -47,7 +47,7 @@ const Login = () => {
           localStorage.setItem('authToken', data.token);
           localStorage.setItem('rememberedEmail', email);
         } else {
-          sessionStorage.setItem('authToken', data.token);
+          localStorage.setItem('authToken', data.token);
           localStorage.removeItem('rememberedEmail');
         }
         
@@ -130,6 +130,15 @@ const Login = () => {
           className="btn btn-link text-decoration-none"
         >
           Înregistrează-te aici
+        </button>
+      </p>
+      <p className="text-center mt-3">
+        Esti Mecanic?{' '}
+        <button
+          onClick={() => navigate('/MechanicLogin')}
+          className="btn btn-link text-decoration-none"
+        >
+          Intra in contul tau!
         </button>
       </p>
       <div className="text-center">
