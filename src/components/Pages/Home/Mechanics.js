@@ -73,7 +73,7 @@ const MechanicsCRUD = () => {
   return (
     <div className="mechanics-crud-container">
       <div className="crud-header">
-        <h2>Manage Mechanics</h2>
+        <h2>Manage Cats</h2>
         <button 
           className="add-mechanic-btn"
           onClick={() => setShowForm(!showForm)}
@@ -96,7 +96,7 @@ const MechanicsCRUD = () => {
           </div>
 
           <div className="form-input-group">
-            <label>Specialization</label>
+            <label>Breed</label>
             <input
               type="text"
               name="specialization"
@@ -118,7 +118,7 @@ const MechanicsCRUD = () => {
           </div>
 
           <div className="form-input-group">
-            <label>Rating</label>
+            <label>Age</label>
             <input
               type="number"
               name="rating"
@@ -143,7 +143,7 @@ const MechanicsCRUD = () => {
           </div>
 
           <button type="submit" className="add-mechanic-btn">
-            Add Mechanic
+            Add Cats
           </button>
         </form>
       )}
@@ -152,7 +152,7 @@ const MechanicsCRUD = () => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Specialization</th>
+            <th>Breed</th>
             <th>Actions</th>
           </tr>
         </thead>

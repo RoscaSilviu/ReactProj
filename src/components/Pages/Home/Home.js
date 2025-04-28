@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import HomeImage from '../../../HomeCars.png';
+import HomeImage from '../../../bg.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,9 +13,9 @@ const Home = () => {
   return (
     <div className="container mt-5">
       <header className="text-center mb-5">
-        <h1 className="display-4">Welcome to Our Service</h1>
-        <p className="lead">We offer the best services for your vehicle. Our experienced mechanics are ready to assist you with any issues you might have.</p>
-        <p>Explore our services and schedule an appointment now!</p>
+        <h1 className="display-4">Welcome to Fur-ever Home</h1>
+        <p className="lead">We're dedicated to giving every cat a second chance at love. Our caring team is here to match each whiskered friend with their perfect forever family.</p>
+        <p>Meet our adorable residents and find your new furry companion today!</p>
       </header>
 
       {/* Image container with text overlay */}
@@ -47,42 +47,42 @@ const Home = () => {
               width: '80%',
             }}
           >
-            <h2>Premium Car Service</h2>
-            <p>Book an appointment today for top-quality vehicle maintenance.</p>
+            <h2>Adopt a Feline Friend</h2>
+            <p>Start your journey today and give a loving cat the forever home they deserve.</p>
           </div>
         </div>
       </div>
 
       <div className="text-center mb-5">
         <button onClick={handleButtonClick} className="btn btn-primary btn-lg shadow">
-          Schedule an Appointment
+          Adopt a cat
         </button>
       </div>
 
       <section className="reviews mb-5">
-        <h2 className="text-center mb-4">What Our Clients Say</h2>
+        <h2 className="text-center mb-4">What Our Adopters Say</h2>
         <div className="row">
           <div className="col-md-4">
             <div className="card shadow mb-4">
               <div className="card-body">
-                <p className="card-text">"Excellent service! My car has never run better."</p>
-                <footer className="blockquote-footer">John Doe</footer>
+                <p className="card-text">"Adopting from Fur-ever Home was the best decision! Our new kitty fits right into the family."</p>
+                <footer className="blockquote-footer">Alexandra</footer>
               </div>
             </div>
           </div>
           <div className="col-md-4">
             <div className="card shadow mb-4">
               <div className="card-body">
-                <p className="card-text">"Friendly staff and quick service."</p>
-                <footer className="blockquote-footer">Jane Smith</footer>
+                <p className="card-text">"The staff were so kind and helpful, they truly care about every cat."</p>
+                <footer className="blockquote-footer">Stefi</footer>
               </div>
             </div>
           </div>
           <div className="col-md-4">
             <div className="card shadow mb-4">
               <div className="card-body">
-                <p className="card-text">"Affordable prices and top-notch quality."</p>
-                <footer className="blockquote-footer">Emily Johnson</footer>
+                <p className="card-text">"We found our perfect match thanks to Fur-ever Home. Highly recommend to anyone looking to adopt!"</p>
+                <footer className="blockquote-footer">Ioana</footer>
               </div>
             </div>
           </div>
@@ -90,8 +90,8 @@ const Home = () => {
       </section>
 
       <footer className="bg-light py-3 mt-5">
-        <div className="container text-center">
-          <p>&copy; 2025 Our Service. Made By Silviu. All rights reserved.</p>
+        <div className="container-fluid text-center">
+          <p>&copy; 2025 Our Service. Made By Silviu, Stefi & Alexandra. All rights reserved.</p>
           <ul className="list-inline">
             <li className="list-inline-item">Privacy Policy</li>
             <li className="list-inline-item">Terms of Service</li>

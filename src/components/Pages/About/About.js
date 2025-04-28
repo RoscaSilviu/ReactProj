@@ -33,15 +33,15 @@ const About = () => {
 
   if (loading) return <div className="loading-spinner"></div>;
   if (error) return <div className="error-message">Error: {error}</div>;
-  if (mechanics.length === 0) return <div className="no-mechanics">No mechanics available</div>;
+  if (mechanics.length === 0) return <div className="no-mechanics">No cats available</div>;
 
   const currentMechanic = mechanics[index];
 
   return (
     <div className="about-container">
       <div className="header-section">
-        <h1 className="about-title">Our Expert Mechanics</h1>
-        <p className="about-subtitle">Meet our certified professionals ready to serve your automotive needs</p>
+        <h1 className="about-title">Our Lovely Cats</h1>
+        <p className="about-subtitle">Meet our lovely feline friends ready to be adopted into their fur-ever home!</p>
       </div>
 
       <div className="mechanic-slider">
@@ -64,7 +64,7 @@ const About = () => {
             <div className="mechanic-info">
               <h3 className="mechanic-name">{currentMechanic.name}</h3>
               <p className="specialization">
-                <strong>Specialization:</strong> {currentMechanic.specialization}
+                <strong>Breed:</strong> {currentMechanic.specialization}
               </p>
               
               <div className="availability-section">
@@ -109,10 +109,9 @@ const About = () => {
       <div className="about-description">
         <h2>Why Choose Us?</h2>
         <p>
-          Our ASE-certified technicians combine cutting-edge technology with 
-          hands-on expertise to deliver exceptional automotive care. 
-          We specialize in both routine maintenance and complex repairs, 
-          ensuring your vehicle performs at its best.
+          Our passionate, cat-loving team combines years of hands-on experience with a deep commitment to feline care. 
+          From playful kittens to wise old whiskers, we provide a safe, loving environment for every cat. 
+          Whether it's cuddles, care, or finding their forever home, we're here to help each cat thrive.
         </p>
       </div>
     </div>

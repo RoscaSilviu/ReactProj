@@ -14,13 +14,13 @@ const Navbar = () => {
     localStorage.removeItem('rememberedEmail');
     setIsAuthenticated(false);
     alert('Te-ai deconectat cu succes!');
-    navigate('/login');
+    navigate('/login'); 
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <NavLink to="/home" className="navbar-brand">Meowkanic</NavLink>
+        <NavLink to="/home" className="navbar-brand">Fur-ever Home</NavLink>
         <div className={`navbar-menu ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
           <ul className="navbar-nav">
           <li className="nav-item">
@@ -61,7 +61,27 @@ const Navbar = () => {
                 `nav-link ${isActive ? 'active' : ''}`
               }
             >
-              Appointments
+              Adopt
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink 
+              to="/MechanicsCRUD" 
+              className={({ isActive }) => 
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
+              Admin Dashboard
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink 
+              to="/create-appointment"
+              className={({ isActive }) => 
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
+              Come visit!
             </NavLink>
           </li>
             <li className="nav-item">

@@ -10,9 +10,9 @@ import Appointment from './components/Pages/Appointments/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/Pages/Appointments/User-appointments';
-import MechanicsCRUD from './components/Pages/Mechanics/Mechanics';
-import MechanicLogin from './components/Pages/Mechanics/MechanicLogin';
-import MechanicAppointmentManagement from './components/Pages/Mechanics/MechanicsAppointments';
+import MechanicsCRUD from './components/Pages/Home/Mechanics';
+import MechanicLogin from './components/Pages/Home/MechanicLogin';
+import MechanicAppointmentManagement from './components/Pages/Home/MechanicsAppointments';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
