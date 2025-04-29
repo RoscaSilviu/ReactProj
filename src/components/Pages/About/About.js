@@ -49,22 +49,21 @@ const About = () => {
           <div className="mechanic-card" key={currentMechanic.id}>
             <div className="image-container">
               <img 
-                src="{currentMechanic.imageUrl}"
+                src={currentMechanic.image}
                 alt={currentMechanic.name} 
                 className="mechanic-image"
                 onError={(e) => {
                   e.target.src = '/default-mechanic.jpg'; // Fallback image
                 }}
               />
-              <div className="rating-badge">
-                ⭐ {currentMechanic.rating}/5
-              </div>
             </div>
             
             <div className="mechanic-info">
               <h3 className="mechanic-name">{currentMechanic.name}</h3>
               <p className="specialization">
                 <strong>Breed:</strong> {currentMechanic.specialization}
+                <strong>Age:</strong> {currentMechanic.rating}
+
               </p>
               
               <div className="availability-section">

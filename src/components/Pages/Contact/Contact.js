@@ -48,19 +48,19 @@ const Contact = () => {
         <div className="contact-header">
           <h2 className="contact-title">
             <i className="bi bi-envelope-paper"></i>
-            Contactează-ne
+            Contact us!
           </h2>
-          <p className="contact-subtitle">Ai întrebări sau nelămuriri? Scrie-ne!</p>
+          <p className="contact-subtitle">Do you have any questions for us? Write us here!</p>
         </div>
 
         <form onSubmit={handleSubmit} className="contact-form">
           <div className="form-group">
-            <label htmlFor="name">Nume complet</label>
+            <label htmlFor="name">Full name</label>
             <input
               type="text"
               id="name"
               name="name"
-              placeholder="Ex: Popescu Ion"
+              placeholder="Ex: John Doe"
               value={formData.name}
               onChange={handleChange}
               required
@@ -68,12 +68,12 @@ const Contact = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Adresă email</label>
+            <label htmlFor="email">Email address</label>
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="Ex: nume@domeniu.com"
+              placeholder="Ex: name@domain.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -81,11 +81,11 @@ const Contact = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="message">Mesajul tău</label>
+            <label htmlFor="message">Your question</label>
             <textarea
               id="message"
               name="message"
-              placeholder="Descrie nevoia ta..."
+              placeholder="Tell us what you need..."
               value={formData.message}
               onChange={handleChange}
               required
@@ -94,7 +94,7 @@ const Contact = () => {
           </div>
 
           <button type="submit" className="submit-btn">
-            Trimite mesaj
+            Send message
             <i className="bi bi-send-arrow"></i>
           </button>
         </form>
