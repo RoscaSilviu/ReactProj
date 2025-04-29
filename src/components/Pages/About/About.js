@@ -49,7 +49,7 @@ const About = () => {
           <div className="mechanic-card" key={currentMechanic.id}>
             <div className="image-container">
               <img 
-                src={`http://localhost:5000/uploads/${currentMechanic.image}`} 
+                src="{currentMechanic.imageUrl}"
                 alt={currentMechanic.name} 
                 className="mechanic-image"
                 onError={(e) => {

@@ -109,7 +109,6 @@ const MechanicsCRUD = () => {
           <div className="form-input-group">
             <label>Image URL</label>
             <input
-              type="url"
               name="image"
               value={formData.image}
               onChange={handleChange}
