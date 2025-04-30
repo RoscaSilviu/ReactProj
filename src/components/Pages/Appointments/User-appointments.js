@@ -152,8 +152,8 @@ const AppointmentManagement = () => {
       <div className="management-container">
         <div className="empty-state">
           <ClockHistory size={48} className="empty-icon" />
-          <h4 className="empty-title">Nu există programări</h4>
-          <p className="empty-subtitle">Momentan nu sunt programări în sistem</p>
+          <h4 className="empty-title">No appointments</h4>
+          <p className="empty-subtitle">For now, there are no appointments in our system</p>
         </div>
       </div>
     );
@@ -164,7 +164,7 @@ const AppointmentManagement = () => {
         <div className="card-header-primary">
           <h3 className="management-title">
             <PersonGear className="header-icon" />
-            Gestionare Programări
+            Your Appointments
           </h3>
         </div>
         
@@ -182,18 +182,18 @@ const AppointmentManagement = () => {
                   
                   <div className="appointment-details">
                     <div className="detail-item">
-                      <span className="detail-label">Mecanic:</span>
+                      <span className="detail-label">Cat:</span>
                       <span className="detail-value">{appointment.mechanic}</span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label">Data:</span>
+                      <span className="detail-label">Date:</span>
                       <span className="detail-value">
                         {new Date(appointment.date).toLocaleDateString('ro-RO')} 
                         <span className="time-badge">{appointment.time}</span>
                       </span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label">Descriere:</span>
+                      <span className="detail-label">Description:</span>
                       <p className="detail-description">{appointment.description}</p>
                     </div>
                   </div>
@@ -229,7 +229,7 @@ const AppointmentManagement = () => {
             <div className="modal-header">
               <h4 className="modal-title">
                 <PencilSquare className="modal-icon" />
-                Editare Programare
+                Edit Appointment
               </h4>
               <button 
                 type="button" 
@@ -243,7 +243,7 @@ const AppointmentManagement = () => {
             <div className="modal-body">
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Marca Mașină</label>
+                  <label>First Name</label>
                   <input
                     className="form-control"
                     name="carBrand"
@@ -253,7 +253,7 @@ const AppointmentManagement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Model Mașină</label>
+                  <label>Last Name</label>
                   <input
                     className="form-control"
                     name="carModel"
@@ -263,7 +263,7 @@ const AppointmentManagement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>An Fabricație</label>
+                  <label>Age</label>
                   <input
                     className="form-control"
                     name="year"
@@ -274,7 +274,7 @@ const AppointmentManagement = () => {
                 </div>
 
                 <div className="form-group-full">
-                  <label>Descriere Problemă</label>
+                  <label>Description</label>
                   <textarea
                     className="form-control"
                     name="description"
@@ -291,13 +291,13 @@ const AppointmentManagement = () => {
                 className="btn btn-secondary"
                 onClick={() => setIsEditDialogOpen(false)}
               >
-                Renunță
+                Cancel
               </button>
               <button 
                 className="btn btn-primary"
                 onClick={handleUpdate}
               >
-                Salvează modificări
+                Save
               </button>
             </div>
           </div>
@@ -311,14 +311,14 @@ const AppointmentManagement = () => {
             <div className="modal-header">
               <h4 className="modal-title">
                 <Trash className="modal-icon" />
-                Confirmare ștergere
+                Confirm delete
               </h4>
             </div>
 
             <div className="modal-body">
               <p className="delete-warning-text">
-                Ești sigur că vrei să ștergi această programare? 
-                Această acțiune este permanentă și nu poate fi anulată.
+                Are you sure you want to delete this appointment? 
+                This action cannot be undone.
               </p>
             </div>
 
@@ -327,13 +327,13 @@ const AppointmentManagement = () => {
                 className="btn btn-secondary"
                 onClick={() => setIsDeleteDialogOpen(false)}
               >
-                Anulează
+                Cancel
               </button>
               <button 
                 className="btn btn-danger"
                 onClick={handleDelete}
               >
-                Șterge definitiv
+                Delete
               </button>
             </div>
           </div>

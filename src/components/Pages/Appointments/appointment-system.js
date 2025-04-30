@@ -28,7 +28,7 @@ const AppointmentScheduler = () => {
         const data = await response.json();
         setMechanics(data);
       } catch (err) {
-        setError('Eroare la încărcarea mecanicilor');
+        setError('Error fetching the cats');
       }
     };
     fetchMechanics();
@@ -67,19 +67,19 @@ const AppointmentScheduler = () => {
   };
 
   const validateStep1 = () => {
-    if (!formData.mechanicId) return 'Selectați un mecanic';
-    if (!formData.date) return 'Selectați o dată';
-    if (!formData.time) return 'Selectați o oră';
+    if (!formData.mechanicId) return 'Select a cat';
+    if (!formData.date) return 'Select a date';
+    if (!formData.time) return 'Select a time';
     return null;
   };
 
   const validateStep2 = () => {
     const requiredFields = ['carBrand', 'carModel', 'year', 'description'];
     for (const field of requiredFields) {
-      if (!formData[field]) return `Completați câmpul: ${field}`;
+      if (!formData[field]) return `Complete the field: ${field}`;
     }
     if (formData.year < 1900 || formData.year > new Date().getFullYear()) {
-      return 'An invalid';
+      return 'Invalid year';
     }
     return null;
   };
@@ -102,7 +102,7 @@ const AppointmentScheduler = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Eroare la programare');
+        throw new Error(errorData.error || 'Erorr creating appointment');
       }
 
       setStep(4);
@@ -118,11 +118,11 @@ const AppointmentScheduler = () => {
       case 1:
         return (
           <div>
-            <h3 className="mb-3">Selectați Mecanic, Data și Ora</h3>
+            <h3 className="mb-3">Select the cat, date and time</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="mb-3">
-              <h5>Mecanici Disponibili</h5>
+              <h5>Available cats</h5>
               <div className="row row-cols-1 g-3">
                 {mechanics.map((mechanic) => (
                   <div key={mechanic.id} className="col">
@@ -213,7 +213,7 @@ const AppointmentScheduler = () => {
                 }
               }}
             >
-              Continuă
+              Continue
             </button>
           </div>
         );
@@ -221,7 +221,7 @@ const AppointmentScheduler = () => {
       case 2:
         return (
           <div>
-            <h3 className="mb-3">Detalii Vehicul</h3>
+            <h3 className="mb-3">Appointment details</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="row g-3">
@@ -229,7 +229,7 @@ const AppointmentScheduler = () => {
                 <input
                   type="text"
                   name="carBrand"
-                  placeholder="Marca"
+                  placeholder="First name"
                   value={formData.carBrand}
                   onChange={handleInputChange}
                   className="form-control"
@@ -239,7 +239,7 @@ const AppointmentScheduler = () => {
                 <input
                   type="text"
                   name="carModel"
-                  placeholder="Model"
+                  placeholder="Last name"
                   value={formData.carModel}
                   onChange={handleInputChange}
                   className="form-control"
@@ -249,18 +249,18 @@ const AppointmentScheduler = () => {
                 <input
                   type="number"
                   name="year"
-                  placeholder="An fabricație"
+                  placeholder="Age"
                   value={formData.year}
                   onChange={handleInputChange}
                   className="form-control"
-                  min="1900"
-                  max={new Date().getFullYear()}
+                  min="18"
+                  max="100"
                 />
               </div>
               <div className="col-12">
                 <textarea
                   name="description"
-                  placeholder="Descriere problemă..."
+                  placeholder="Tell us what you want to achieve during your appointment"
                   value={formData.description}
                   onChange={handleInputChange}
                   className="form-control"
@@ -274,7 +274,7 @@ const AppointmentScheduler = () => {
                 className="btn btn-secondary" 
                 onClick={() => setStep(1)}
               >
-                Înapoi
+                Back
               </button>
               <button
                 className="btn btn-primary flex-grow-1"
@@ -288,7 +288,7 @@ const AppointmentScheduler = () => {
                   }
                 }}
               >
-                Continuă
+                Continue
               </button>
             </div>
           </div>
@@ -297,27 +297,27 @@ const AppointmentScheduler = () => {
       case 3:
         return (
           <div>
-            <h3 className="mb-3">Confirmare Programare</h3>
+            <h3 className="mb-3">Confirm appointment</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">Detalii programare</h5>
+                <h5 className="card-title">Appointment details</h5>
                 <dl className="row mb-0">
-                  <dt className="col-sm-4">Mecanic</dt>
+                  <dt className="col-sm-4">Cat</dt>
                   <dd className="col-sm-8">{selectedMechanic?.name}</dd>
 
-                  <dt className="col-sm-4">Dată și oră</dt>
+                  <dt className="col-sm-4">Date and time</dt>
                   <dd className="col-sm-8">
                     {formData.date?.toLocaleDateString()} {formData.time}
                   </dd>
 
-                  <dt className="col-sm-4">Vehicul</dt>
+                  <dt className="col-sm-4">Personal information</dt>
                   <dd className="col-sm-8">
                     {formData.carBrand} {formData.carModel} ({formData.year})
                   </dd>
 
-                  <dt className="col-sm-4">Descriere</dt>
+                  <dt className="col-sm-4">Description</dt>
                   <dd className="col-sm-8">{formData.description}</dd>
                 </dl>
               </div>
@@ -328,14 +328,14 @@ const AppointmentScheduler = () => {
                 className="btn btn-secondary" 
                 onClick={() => setStep(2)}
               >
-                Înapoi
+                Back
               </button>
               <button
                 className="btn btn-success flex-grow-1"
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                {loading ? 'Se procesează...' : 'Confirmă Programarea'}
+                {loading ? 'Processing...' : 'Confirm appointment'}
               </button>
             </div>
           </div>
@@ -345,7 +345,7 @@ const AppointmentScheduler = () => {
         return (
           <div className="text-center">
             <div className="alert alert-success">
-              Programare realizată cu succes!
+              Appointment
             </div>
             <button 
               className="btn btn-primary"
@@ -364,7 +364,7 @@ const AppointmentScheduler = () => {
                 });
               }}
             >
-              Nouă Programare
+              New appointment
             </button>
           </div>
         );
@@ -378,7 +378,7 @@ const AppointmentScheduler = () => {
     <div className="container py-4">
       <div className="card shadow-lg mx-auto" style={{ maxWidth: '800px' }}>
         <div className="card-header bg-primary text-white">
-          <h2 className="card-title mb-0">Programare Service Auto</h2>
+          <h2 className="card-title mb-0">Cat visitation appointment</h2>
         </div>
         <div className="card-body p-4">{renderStep()}</div>
       </div>
