@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const MechanicLogin = () => {
+const CatLogin = () => {
   const [name, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { setIsAuthenticated } = useAuth();
@@ -21,7 +21,7 @@ const MechanicLogin = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/mechanics/login', {
+      const response = await fetch('http://localhost:5000/cats/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, password }),
@@ -42,9 +42,9 @@ const MechanicLogin = () => {
 
         console.log(data.token);
 
-        localStorage.setItem('mechanicId', data.mechanic.id);
-        console.log(data.mechanic.id);
-        navigate(location.state?.from || '/MechanitcAppoinments');
+        localStorage.setItem('catId', data.cat.id);
+        console.log(data.cat.id);
+        navigate(location.state?.from || '/CatAppoinments');
       } else {
         alert('Nume de utilizator sau parolă incorectă!');
       }
@@ -92,4 +92,4 @@ const MechanicLogin = () => {
   );
 };
 
-export default MechanicLogin;
+export default CatLogin;

@@ -7,7 +7,7 @@ const rateLimit = require('express-rate-limit');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
-const { Appointment, User , Mechanic } = require('./models');
+const { Appointment, User , Cat } = require('./models');
 require('dotenv').config({ path: '../.env' });
 
 const app = express();
@@ -183,16 +183,16 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/mechanics', async (req, res) => {
-  console.log('get mechanics');
-  const mechanics = await Mechanic.findAll();
-  res.json(mechanics);
+app.get('/cats', async (req, res) => {
+  console.log('get cats');
+  const cats = await Cat.findAll();
+  res.json(cats);
 });
 
-app.post('/mechanics',authenticate, async (req, res) => {
+app.post('/cats',authenticate, async (req, res) => {
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
   console.log(req.body);
-  console.log("post mechanics");
+  console.log("post cats");
   try {
     const requiredFields = ['name', 'specialization', 'image', 'rating', 'availableSlots'];
     for (const field of requiredFields) {
@@ -205,7 +205,7 @@ app.post('/mechanics',authenticate, async (req, res) => {
       return res.status(400).json({ error: 'Rating must be between 0 and 5' });
     }
 
-    const mechanic = await Mechanic.create({
+    const cat = await Cat.create({
       name: req.body.name,
       specialization: req.body.specialization,
       image: req.body.image,
@@ -215,53 +215,53 @@ app.post('/mechanics',authenticate, async (req, res) => {
         : req.body.availableSlots.split(',')
     });
     
-    res.status(201).json(mechanic);
+    res.status(201).json(cat);
   } catch (error) {
-    console.error('Error creating mechanic:', error);
+    console.error('Error creating cat:', error);
     res.status(400).json({ error: error.message });
   }
 });
 
-app.delete('/mechanics/:id', authenticate, async (req, res) => {
+app.delete('/cats/:id', authenticate, async (req, res) => {
   console.log
   if (req.user.role !== 'admin') return res.status(403).json({ error: 'Forbidden' });
   
-  await Mechanic.destroy({ where: { id: req.params.id } });
-  res.json({ message: 'Mechanic deleted' });
+  await Cat.destroy({ where: { id: req.params.id } });
+  res.json({ message: 'Cat deleted' });
 });
 
-app.post('/mechanics/login', async (req, res) => {
+app.post('/cats/login', async (req, res) => {
   try {
     const { name, password } = req.body;
     console.log(name + " " + password);
-    if (password !== process.env.MECHANIC_UNIVERSAL_PASSWORD) {
+    if (password !== process.env.CAT_UNIVERSAL_PASSWORD) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const mechanic = await Mechanic.findOne({ where: { name } });
+    const cat = await Cat.findOne({ where: { name } });
     
-    console.log(mechanic);
-    if (!mechanic) {
-      return res.status(404).json({ error: 'Mechanic not found' });
+    console.log(cat);
+    if (!cat) {
+      return res.status(404).json({ error: 'Cat not found' });
     }
 
     const token = jwt.sign(
-      { id: mechanic.id, role: 'mechanic' },
+      { id: cat.id, role: 'cat' },
       process.env.JWT_SECRET,
       { expiresIn: '8h' }
     );
 
-    res.json({ token, mechanic });
+    res.json({ token, cat });
   } catch (error) {
     res.status(500).json({ error: 'Login failed' });
   }
 });
 
 
-app.get('/mechanic/appointments/:id', async (req, res) => {
+app.get('/cat/appointments/:id', async (req, res) => {
   try {
     const appointments = await Appointment.findAll({
-      where: { mechanicId: req.params.id },
+      where: { catId: req.params.id },
       include: [
         {
           model: User,
@@ -277,18 +277,18 @@ app.get('/mechanic/appointments/:id', async (req, res) => {
 
     res.status(200).json(appointments);
   } catch (error) {
-    console.error('Error fetching mechanic appointments:', error);
+    console.error('Error fetching cat appointments:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
 // Endpoint pentru a actualiza o programare de mecanic
-app.put('/mechanic/appointments/:id', async (req, res) => {
+app.put('/cat/appointments/:id', async (req, res) => {
   try {
     const appointment = await Appointment.findOne({
       where: {
         id: req.params.id,
-        mechanicId: req.mechanic.id,
+        catId: req.cat.id,
       },
     });
 
@@ -300,18 +300,18 @@ app.put('/mechanic/appointments/:id', async (req, res) => {
 
     res.status(200).json({ message: 'Appointment updated', appointment });
   } catch (error) {
-    console.error('Error updating mechanic appointment:', error);
+    console.error('Error updating cat appointment:', error);
     res.status(400).json({ error: error.message });
   }
 });
 
 // Endpoint pentru a șterge o programare de mecanic
-app.delete('/mechanic/appointments/:id', async (req, res) => {
+app.delete('/cat/appointments/:id', async (req, res) => {
   try {
     const appointment = await Appointment.findOne({
       where: {
         id: req.params.id,
-        mechanicId: req.mechanic.id,
+        catId: req.cat.id,
       },
     });
 
@@ -323,7 +323,7 @@ app.delete('/mechanic/appointments/:id', async (req, res) => {
 
     res.status(200).json({ message: 'Appointment deleted' });
   } catch (error) {
-    console.error('Error deleting mechanic appointment:', error);
+    console.error('Error deleting cat appointment:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

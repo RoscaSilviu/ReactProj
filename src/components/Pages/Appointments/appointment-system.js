@@ -4,15 +4,15 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 
 const AppointmentScheduler = () => {
-  const [mechanics, setMechanics] = useState([]);
+  const [cats, setCats] = useState([]);
   const [step, setStep] = useState(1);
-  const [selectedMechanic, setSelectedMechanic] = useState(null);
+  const [selectedCat, setSelectedCat] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     userId: parseInt(localStorage.getItem('userId')),
-    mechanicId: null,
+    catId: null,
     date: null,
     time: '',
     carBrand: '',
@@ -22,16 +22,16 @@ const AppointmentScheduler = () => {
   });
 
   useEffect(() => {
-    const fetchMechanics = async () => {
+    const fetchCats = async () => {
       try {
-        const response = await fetch('http://localhost:5000/mechanics');
+        const response = await fetch('http://localhost:5000/cats');
         const data = await response.json();
-        setMechanics(data);
+        setCats(data);
       } catch (err) {
         setError('Eroare la încărcarea mecanicilor');
       }
     };
-    fetchMechanics();
+    fetchCats();
   }, []);
 
   const handleInputChange = (e) => {
@@ -41,11 +41,11 @@ const AppointmentScheduler = () => {
     });
   };
 
-  const handleMechanicSelect = (mechanic) => {
-    setSelectedMechanic(mechanic);
+  const handleCatSelect = (cat) => {
+    setSelectedCat(cat);
     setFormData(prev => ({
       ...prev,
-      mechanicId: mechanic.id,
+      catId: cat.id,
       date: null,
       time: ''
     }));
@@ -67,7 +67,7 @@ const AppointmentScheduler = () => {
   };
 
   const validateStep1 = () => {
-    if (!formData.mechanicId) return 'Selectați un mecanic';
+    if (!formData.catId) return 'Selectați un mecanic';
     if (!formData.date) return 'Selectați o dată';
     if (!formData.time) return 'Selectați o oră';
     return null;
@@ -124,36 +124,36 @@ const AppointmentScheduler = () => {
             <div className="mb-3">
               <h5>Mecanici Disponibili</h5>
               <div className="row row-cols-1 g-3">
-                {mechanics.map((mechanic) => (
-                  <div key={mechanic.id} className="col">
-                    <div className={`card ${selectedMechanic?.id === mechanic.id ? 'border-primary' : ''}`}>
+                {cats.map((cat) => (
+                  <div key={cat.id} className="col">
+                    <div className={`card ${selectedCat?.id === cat.id ? 'border-primary' : ''}`}>
                       <div className="card-body">
                         <div className="d-flex align-items-center gap-3">
                           <img 
-                            src={mechanic.image} 
-                            alt={mechanic.name} 
+                            src={cat.image} 
+                            alt={cat.name} 
                             className="rounded-circle" 
                             style={{width: '60px', height: '60px', objectFit: 'cover'}}
                           />
                           <div>
-                            <h5 className="mb-1">{mechanic.name}</h5>
-                            <p className="text-muted mb-1">{mechanic.specialization}</p>
+                            <h5 className="mb-1">{cat.name}</h5>
+                            <p className="text-muted mb-1">{cat.specialization}</p>
                             <div className="d-flex gap-2">
                               <span className="badge bg-info">
-                                Rating: {mechanic.rating}/5
+                                Rating: {cat.rating}/5
                               </span>
                             </div>
                           </div>
                         </div>
                         <button
                           className={`btn btn-sm mt-2 ${
-                            selectedMechanic?.id === mechanic.id 
+                            selectedCat?.id === cat.id 
                             ? 'btn-primary' 
                             : 'btn-outline-primary'
                           }`}
-                          onClick={() => handleMechanicSelect(mechanic)}
+                          onClick={() => handleCatSelect(cat)}
                         >
-                          {selectedMechanic?.id === mechanic.id ? 'Selectat' : 'Selectează'}
+                          {selectedCat?.id === cat.id ? 'Selectat' : 'Selectează'}
                         </button>
                       </div>
                     </div>
@@ -162,7 +162,7 @@ const AppointmentScheduler = () => {
               </div>
             </div>
 
-            {selectedMechanic && (
+            {selectedCat && (
               <>
                 <div className="mb-3">
                   <h5>Selectați Data</h5>
@@ -180,7 +180,7 @@ const AppointmentScheduler = () => {
                   <div className="mb-3">
                     <h5>Ore Disponibile</h5>
                     <div className="d-flex flex-wrap gap-2">
-                      {selectedMechanic.availableSlots.map((time) => (
+                      {selectedCat.availableSlots.map((time) => (
                         <button
                           key={time}
                           className={`btn btn-sm ${
@@ -189,7 +189,7 @@ const AppointmentScheduler = () => {
                             : 'btn-outline-secondary'
                           }`}
                           onClick={() => handleTimeSelect(time)}
-                          disabled={!selectedMechanic.availableSlots.includes(time)}
+                          disabled={!selectedCat.availableSlots.includes(time)}
                         >
                           {time}
                         </button>
@@ -202,7 +202,7 @@ const AppointmentScheduler = () => {
 
             <button
               className="btn btn-primary w-100"
-              disabled={!formData.mechanicId || !formData.date || !formData.time}
+              disabled={!formData.catId || !formData.date || !formData.time}
               onClick={() => {
                 const error = validateStep1();
                 if (error) {
@@ -305,7 +305,7 @@ const AppointmentScheduler = () => {
                 <h5 className="card-title">Detalii programare</h5>
                 <dl className="row mb-0">
                   <dt className="col-sm-4">Mecanic</dt>
-                  <dd className="col-sm-8">{selectedMechanic?.name}</dd>
+                  <dd className="col-sm-8">{selectedCat?.name}</dd>
 
                   <dt className="col-sm-4">Dată și oră</dt>
                   <dd className="col-sm-8">
@@ -351,10 +351,10 @@ const AppointmentScheduler = () => {
               className="btn btn-primary"
               onClick={() => {
                 setStep(1);
-                setSelectedMechanic(null);
+                setSelectedCat(null);
                 setFormData({
                   ...formData,
-                  mechanicId: null,
+                  catId: null,
                   date: null,
                   time: '',
                   carBrand: '',

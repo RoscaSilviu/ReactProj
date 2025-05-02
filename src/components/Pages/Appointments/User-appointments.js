@@ -183,7 +183,7 @@ const AppointmentManagement = () => {
                   <div className="appointment-details">
                     <div className="detail-item">
                       <span className="detail-label">Mecanic:</span>
-                      <span className="detail-value">{appointment.mechanic}</span>
+                      <span className="detail-value">{appointment.cat}</span>
                     </div>
                     <div className="detail-item">
                       <span className="detail-label">Data:</span>

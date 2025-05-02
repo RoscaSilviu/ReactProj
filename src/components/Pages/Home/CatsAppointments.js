@@ -4,7 +4,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { PencilSquare, Trash, PersonGear } from 'react-bootstrap-icons';
 import './miau.css';
 
-const MechanicAppointmentManagement = () => {
+const CatAppointmentManagement = () => {
   const [appointments, setAppointments] = useState([]);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -18,10 +18,10 @@ const MechanicAppointmentManagement = () => {
   const { setIsAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMechanicAppointments = useCallback(async () => {
+  const fetchCatAppointments = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/mechanic/appointments/${localStorage.getItem('mechanicId')}`, {
+      const response = await fetch(`http://localhost:5000/cat/appointments/${localStorage.getItem('catId')}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -33,12 +33,12 @@ const MechanicAppointmentManagement = () => {
         return;
       }
 
-      if (!response.ok) throw new Error('Failed to fetch mechanic appointments');
+      if (!response.ok) throw new Error('Failed to fetch cat appointments');
 
       const data = await response.json();
       setAppointments(data);
     } catch (error) {
-      console.error('Error fetching mechanic appointments:', error);
+      console.error('Error fetching cat appointments:', error);
       alert('Eroare la încărcarea programărilor.');
     } finally {
       setIsLoading(false);
@@ -46,8 +46,8 @@ const MechanicAppointmentManagement = () => {
   }, [setIsAuthenticated]);
 
   useEffect(() => {
-    fetchMechanicAppointments();
-  }, [fetchMechanicAppointments]);
+    fetchCatAppointments();
+  }, [fetchCatAppointments]);
 
   const handleEditInputChange = (e) => {
     setEditForm({
@@ -338,4 +338,4 @@ const MechanicAppointmentManagement = () => {
   );
 };
 
-export default MechanicAppointmentManagement;
+export default CatAppointmentManagement;
