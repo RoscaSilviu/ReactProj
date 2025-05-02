@@ -143,7 +143,7 @@ const Login = () => {
           <p className="text-center mt-3">
             Esti Administrator?{" "}
             <button
-              onClick={() => navigate("/MechanicLogin")}
+              onClick={() => navigate("/CatLogin")}
               className="btn btn-link text-decoration-none"
             >
               Intra in contul tau!

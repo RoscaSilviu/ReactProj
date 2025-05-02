@@ -22,7 +22,7 @@
   margin: 0 auto;
 }
 
-.mechanic-slider {
+.cat-slider {
   position: relative;
   margin: 2rem 0;
 }
@@ -32,7 +32,7 @@
   min-height: 400px;
 }
 
-.mechanic-card {
+.cat-card {
   background: white;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -48,7 +48,7 @@
   background: #f5f6fa;
 }
 
-.mechanic-image {
+.cat-image {
   width: 100%;
   height: 100%;
   object-fit: fill;
@@ -65,11 +65,11 @@
   font-weight: bold;
 }
 
-.mechanic-info {
+.cat-info {
   padding: 2rem;
 }
 
-.mechanic-name {
+.cat-name {
   color: #2c3e50;
   margin-bottom: 1rem;
 }
@@ -160,7 +160,7 @@
   padding: 2rem;
 }
 
-.no-mechanics {
+.no-cats {
   text-align: center;
   padding: 2rem;
   color: #7f8c8d;

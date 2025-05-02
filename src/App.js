@@ -10,9 +10,9 @@ import Appointment from './components/Pages/Appointments/appointment-system';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import AppointmentManagement from './components/Pages/Appointments/User-appointments';
-import MechanicsCRUD from './components/Pages/Home/Mechanics';
-import MechanicLogin from './components/Pages/Home/MechanicLogin';
-import MechanicAppointmentManagement from './components/Pages/Home/MechanicsAppointments';
+import CatsCRUD from './components/Pages/Home/Cats';
+import CatLogin from './components/Pages/Home/CatLogin';
+import CatAppointmentManagement from './components/Pages/Home/CatsAppointments';
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -38,9 +38,9 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/MechanicsCRUD" element={<MechanicsCRUD/>} />
-            <Route path="/MechanicLogin" element={<MechanicLogin/>} />
-            <Route path="/MechanitcAppoinments" element={<MechanicAppointmentManagement/>} />
+            <Route path="/CatsCRUD" element={<CatsCRUD/>} />
+            <Route path="/CatLogin" element={<CatLogin/>} />
+            <Route path="/CatAppoinments" element={<CatAppointmentManagement/>} />
             {/* Protected routes */}
             <Route path="/home" element={
               <ProtectedRoute>

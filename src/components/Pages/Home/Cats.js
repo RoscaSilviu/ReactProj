@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './Mechanics.css';
+import './Cats.css';
 
-const MechanicsCRUD = () => {
-  const [mechanics, setMechanics] = useState([]);
+const CatsCRUD = () => {
+  const [cats, setCats] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
     specialization: '',
@@ -13,13 +13,13 @@ const MechanicsCRUD = () => {
   const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    fetchMechanics();
+    fetchCats();
   }, []);
 
-  const fetchMechanics = async () => {
-    const response = await fetch('http://localhost:5000/mechanics');
+  const fetchCats = async () => {
+    const response = await fetch('http://localhost:5000/cats');
     const data = await response.json();
-    setMechanics(data);
+    setCats(data);
   };
 
   const handleChange = (e) => {
@@ -32,7 +32,7 @@ const MechanicsCRUD = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch('http://localhost:5000/mechanics', {
+      await fetch('http://localhost:5000/cats', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,38 +52,38 @@ const MechanicsCRUD = () => {
         availableSlots: ''
       });
       setShowForm(false);
-      fetchMechanics();
+      fetchCats();
     } catch (error) {
-      console.error('Error adding mechanic:', error);
+      console.error('Error adding cat:', error);
     }
   };
 
   const handleDelete = async (id) => {
     console.log(localStorage.getItem('authToken'));
-    await fetch(`http://localhost:5000/mechanics/${id}`, {
+    await fetch(`http://localhost:5000/cats/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('authToken')}`
       },
     });
-    fetchMechanics();
+    fetchCats();
   };
 
   return (
-    <div className="mechanics-crud-container">
+    <div className="cats-crud-container">
       <div className="crud-header">
         <h2>Manage Cats</h2>
         <button 
-          className="add-mechanic-btn"
+          className="add-cat-btn"
           onClick={() => setShowForm(!showForm)}
         >
-          {showForm ? 'Cancel' : 'Add New Mechanic'}
+          {showForm ? 'Cancel' : 'Add New Cat'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="mechanic-form-card">
+        <form onSubmit={handleSubmit} className="cat-form-card">
           <div className="form-input-group">
             <label>Name</label>
             <input
@@ -141,13 +141,13 @@ const MechanicsCRUD = () => {
             />
           </div>
 
-          <button type="submit" className="add-mechanic-btn">
+          <button type="submit" className="add-cat-btn">
             Add Cats
           </button>
         </form>
       )}
 
-      <table className="mechanics-table">
+      <table className="cats-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -156,14 +156,14 @@ const MechanicsCRUD = () => {
           </tr>
         </thead>
         <tbody>
-          {mechanics.map(mechanic => (
-            <tr key={mechanic.id}>
-              <td>{mechanic.name}</td>
-              <td>{mechanic.specialization}</td>
+          {cats.map(cat => (
+            <tr key={cat.id}>
+              <td>{cat.name}</td>
+              <td>{cat.specialization}</td>
               <td>
                 <button 
                   className="delete-btn" 
-                  onClick={() => handleDelete(mechanic.id)}
+                  onClick={() => handleDelete(cat.id)}
                 >
                   Delete
                 </button>
@@ -176,4 +176,4 @@ const MechanicsCRUD = () => {
   );
 };
 
-export default MechanicsCRUD;
+export default CatsCRUD;

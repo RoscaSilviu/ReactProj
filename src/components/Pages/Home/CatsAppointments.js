@@ -4,7 +4,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { PencilSquare, Trash, PersonGear } from 'react-bootstrap-icons';
 import './miau.css';
 
-const MechanicAppointmentManagement = () => {
+const CatAppointmentManagement = () => {
   const [appointments, setAppointments] = useState([]);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -18,10 +18,10 @@ const MechanicAppointmentManagement = () => {
   const { setIsAuthenticated } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchMechanicAppointments = useCallback(async () => {
+  const fetchCatAppointments = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/mechanic/appointments/${localStorage.getItem('mechanicId')}`, {
+      const response = await fetch(`http://localhost:5000/cat/appointments/${localStorage.getItem('catId')}`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`
         }
@@ -33,21 +33,21 @@ const MechanicAppointmentManagement = () => {
         return;
       }
 
-      if (!response.ok) throw new Error('Failed to fetch mechanic appointments');
+      if (!response.ok) throw new Error('Failed to fetch cat appointments');
 
       const data = await response.json();
       setAppointments(data);
     } catch (error) {
-      console.error('Error fetching mechanic appointments:', error);
-      alert('Error fetching appointments.');
+      console.error('Error fetching cat appointments:', error);
+      alert('Eroare la încărcarea programărilor.');
     } finally {
       setIsLoading(false);
     }
   }, [setIsAuthenticated]);
 
   useEffect(() => {
-    fetchMechanicAppointments();
-  }, [fetchMechanicAppointments]);
+    fetchCatAppointments();
+  }, [fetchCatAppointments]);
 
   const handleEditInputChange = (e) => {
     setEditForm({
@@ -90,7 +90,7 @@ const MechanicAppointmentManagement = () => {
         return;
       }
 
-      if (!response.ok) throw new Error('Update failed');
+      if (!response.ok) throw new Error('Actualizarea a eșuat');
 
       const updatedAppointment = await response.json();
       setAppointments(prev => prev.map(a => 
@@ -98,8 +98,8 @@ const MechanicAppointmentManagement = () => {
       ));
       setIsEditDialogOpen(false);
     } catch (error) {
-      console.error('Update error:', error);
-      alert('Error updating the appointment.');
+      console.error('Eroare la actualizare:', error);
+      alert('Eroare la actualizarea programării.');
     }
   };
 
@@ -121,15 +121,15 @@ const MechanicAppointmentManagement = () => {
         return;
       }
 
-      if (!response.ok) throw new Error('Delete failed');
+      if (!response.ok) throw new Error('Ștergerea a eșuat');
 
       setAppointments(prev => 
         prev.filter(a => a.id !== selectedAppointment.id)
       );
       setIsDeleteDialogOpen(false);
     } catch (error) {
-      console.error('Delete error:', error);
-      alert('Error deleting the appointment.');
+      console.error('Eroare la ștergere:', error);
+      alert('Eroare la ștergerea programării.');
     }
   };
 
@@ -149,8 +149,8 @@ const MechanicAppointmentManagement = () => {
     return (
       <div className="management-container">
         <div className="empty-state">
-          <h4 className="empty-title">No appointments</h4>
-          <p className="empty-subtitle">There are no appointments made.</p>
+          <h4 className="empty-title">Nu există programări asociate</h4>
+          <p className="empty-subtitle">Momentan nu aveți programări asociate.</p>
         </div>
       </div>
     );
@@ -162,7 +162,7 @@ const MechanicAppointmentManagement = () => {
         <div className="card-header-primary">
           <h3 className="management-title">
             <PersonGear className="header-icon" />
-            My appointments
+            Programările Mele
           </h3>
         </div>
 
@@ -181,14 +181,14 @@ const MechanicAppointmentManagement = () => {
 
                   <div className="appointment-details">
                     <div className="detail-item">
-                      <span className="detail-label">Date:</span>
+                      <span className="detail-label">Data:</span>
                       <span className="detail-value">
                         {new Date(appointment.date).toLocaleDateString('ro-RO')} 
                         <span className="time-badge">{appointment.time}</span>
                       </span>
                     </div>
                     <div className="detail-item">
-                      <span className="detail-label">Description:</span>
+                      <span className="detail-label">Descriere:</span>
                       <p className="detail-description">{appointment.description}</p>
                     </div>
                   </div>
@@ -224,7 +224,7 @@ const MechanicAppointmentManagement = () => {
             <div className="modal-header">
               <h4 className="modal-title">
                 <PencilSquare className="modal-icon" />
-                Edit appointment
+                Editare Programare
               </h4>
               <button 
                 type="button" 
@@ -238,7 +238,7 @@ const MechanicAppointmentManagement = () => {
             <div className="modal-body">
               <div className="form-grid">
                 <div className="form-group">
-                  <label>First name</label>
+                  <label>Marca Mașină</label>
                   <input
                     className="form-control"
                     name="carBrand"
@@ -248,7 +248,7 @@ const MechanicAppointmentManagement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Last name</label>
+                  <label>Model Mașină</label>
                   <input
                     className="form-control"
                     name="carModel"
@@ -258,7 +258,7 @@ const MechanicAppointmentManagement = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Age</label>
+                  <label>An Fabricație</label>
                   <input
                     className="form-control"
                     name="year"
@@ -269,7 +269,7 @@ const MechanicAppointmentManagement = () => {
                 </div>
 
                 <div className="form-group-full">
-                  <label>Appointment details</label>
+                  <label>Descriere Problemă</label>
                   <textarea
                     className="form-control"
                     name="description"
@@ -286,13 +286,13 @@ const MechanicAppointmentManagement = () => {
                 className="btn btn-secondary"
                 onClick={() => setIsEditDialogOpen(false)}
               >
-                Discard
+                Renunță
               </button>
               <button 
                 className="btn btn-primary"
                 onClick={handleUpdate}
               >
-                Save changes
+                Salvează modificări
               </button>
             </div>
           </div>
@@ -306,14 +306,14 @@ const MechanicAppointmentManagement = () => {
             <div className="modal-header">
               <h4 className="modal-title">
                 <Trash className="modal-icon" />
-                Confirm deletion
+                Confirmare ștergere
               </h4>
             </div>
 
             <div className="modal-body">
               <p className="delete-warning-text">
-                Are you sure you want to delete this appointment?
-                 This action cannot be undone.
+                Ești sigur că vrei să ștergi această programare? 
+                Această acțiune este permanentă și nu poate fi anulată.
               </p>
             </div>
 
@@ -322,13 +322,13 @@ const MechanicAppointmentManagement = () => {
                 className="btn btn-secondary"
                 onClick={() => setIsDeleteDialogOpen(false)}
               >
-                Cancel
+                Anulează
               </button>
               <button 
                 className="btn btn-danger"
                 onClick={handleDelete}
               >
-                Delete
+                Șterge definitiv
               </button>
             </div>
           </div>
@@ -338,4 +338,4 @@ const MechanicAppointmentManagement = () => {
   );
 };
 
-export default MechanicAppointmentManagement;
+export default CatAppointmentManagement;

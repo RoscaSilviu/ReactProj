@@ -3,39 +3,39 @@ import './About.css';
 
 const About = () => {
   const [index, setIndex] = useState(0);
-  const [mechanics, setMechanics] = useState([]);
+  const [cats, setCats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchMechanics = async () => {
+    const fetchCats = async () => {
       try {
-        const response = await fetch('http://localhost:5000/mechanics');
-        if (!response.ok) throw new Error('Failed to fetch mechanics');
+        const response = await fetch('http://localhost:5000/cats');
+        if (!response.ok) throw new Error('Failed to fetch cats');
         const data = await response.json();
-        setMechanics(data);
+        setCats(data);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-    fetchMechanics();
+    fetchCats();
   }, []);
 
   const handlePrevClick = () => {
-    setIndex(prev => (prev === 0 ? mechanics.length - 1 : prev - 1));
+    setIndex(prev => (prev === 0 ? cats.length - 1 : prev - 1));
   };
 
   const handleNextClick = () => {
-    setIndex(prev => (prev === mechanics.length - 1 ? 0 : prev + 1));
+    setIndex(prev => (prev === cats.length - 1 ? 0 : prev + 1));
   };
 
   if (loading) return <div className="loading-spinner"></div>;
   if (error) return <div className="error-message">Error: {error}</div>;
-  if (mechanics.length === 0) return <div className="no-mechanics">No cats available</div>;
+  if (cats.length === 0) return <div className="no-cats">No cats available</div>;
 
-  const currentMechanic = mechanics[index];
+  const currentCat = cats[index];
 
   return (
     <div className="about-container">
@@ -44,32 +44,32 @@ const About = () => {
         <p className="about-subtitle">Meet our lovely feline friends ready to be adopted into their fur-ever home!</p>
       </div>
 
-      <div className="mechanic-slider">
+      <div className="cat-slider">
         <div className="slider-wrapper">
-          <div className="mechanic-card" key={currentMechanic.id}>
+          <div className="cat-card" key={currentCat.id}>
             <div className="image-container">
               <img 
-                src={currentMechanic.image}
-                alt={currentMechanic.name} 
-                className="mechanic-image"
+                src={currentCat.image}
+                alt={currentCat.name} 
+                className="cat-image"
                 onError={(e) => {
-                  e.target.src = '/default-mechanic.jpg'; // Fallback image
+                  e.target.src = '/default-cat.jpg'; // Fallback image
                 }}
               />
             </div>
             
-            <div className="mechanic-info">
-              <h3 className="mechanic-name">{currentMechanic.name}</h3>
+            <div className="cat-info">
+              <h3 className="cat-name">{currentCat.name}</h3>
               <p className="specialization">
-                <strong>Breed:</strong> {currentMechanic.specialization}
-                <strong>Age:</strong> {currentMechanic.rating}
+                <strong>Breed:</strong> {currentCat.specialization}
+                <strong>Age:</strong> {currentCat.rating}
 
               </p>
               
               <div className="availability-section">
                 <h4>Available Slots:</h4>
                 <div className="time-slots">
-                  {currentMechanic.availableSlots.map((slot, i) => (
+                  {currentCat.availableSlots.map((slot, i) => (
                     <span key={i} className="time-slot">{slot}</span>
                   ))}
                 </div>
@@ -82,12 +82,12 @@ const About = () => {
           <button 
             className="nav-button prev" 
             onClick={handlePrevClick}
-            aria-label="Previous mechanic"
+            aria-label="Previous cat"
           >
             ‹
           </button>
           <div className="pagination">
-            {mechanics.map((_, i) => (
+            {cats.map((_, i) => (
               <span 
                 key={i}
                 className={`dot ${i === index ? 'active' : ''}`}
@@ -98,7 +98,7 @@ const About = () => {
           <button 
             className="nav-button next" 
             onClick={handleNextClick}
-            aria-label="Next mechanic"
+            aria-label="Next cat"
           >
             ›
           </button>

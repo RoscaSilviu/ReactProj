@@ -17,11 +17,11 @@ module.exports = {
           key: 'id',
         },
       },
-      mechanicId: {
+      catId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Mechanics',
+          model: 'Cats',
           key: 'id',
         },
       },

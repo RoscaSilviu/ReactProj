@@ -4,15 +4,15 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 
 const AppointmentScheduler = () => {
-  const [mechanics, setMechanics] = useState([]);
+  const [cats, setCats] = useState([]);
   const [step, setStep] = useState(1);
-  const [selectedMechanic, setSelectedMechanic] = useState(null);
+  const [selectedCat, setSelectedCat] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     userId: parseInt(localStorage.getItem('userId')),
-    mechanicId: null,
+    catId: null,
     date: null,
     time: '',
     carBrand: '',
@@ -22,16 +22,16 @@ const AppointmentScheduler = () => {
   });
 
   useEffect(() => {
-    const fetchMechanics = async () => {
+    const fetchCats = async () => {
       try {
-        const response = await fetch('http://localhost:5000/mechanics');
+        const response = await fetch('http://localhost:5000/cats');
         const data = await response.json();
-        setMechanics(data);
+        setCats(data);
       } catch (err) {
-        setError('Error fetching the cats');
+        setError('Eroare la încărcarea mecanicilor');
       }
     };
-    fetchMechanics();
+    fetchCats();
   }, []);
 
   const handleInputChange = (e) => {
@@ -41,11 +41,11 @@ const AppointmentScheduler = () => {
     });
   };
 
-  const handleMechanicSelect = (mechanic) => {
-    setSelectedMechanic(mechanic);
+  const handleCatSelect = (cat) => {
+    setSelectedCat(cat);
     setFormData(prev => ({
       ...prev,
-      mechanicId: mechanic.id,
+      catId: cat.id,
       date: null,
       time: ''
     }));
@@ -67,19 +67,19 @@ const AppointmentScheduler = () => {
   };
 
   const validateStep1 = () => {
-    if (!formData.mechanicId) return 'Select a cat';
-    if (!formData.date) return 'Select a date';
-    if (!formData.time) return 'Select a time';
+    if (!formData.catId) return 'Selectați un mecanic';
+    if (!formData.date) return 'Selectați o dată';
+    if (!formData.time) return 'Selectați o oră';
     return null;
   };
 
   const validateStep2 = () => {
     const requiredFields = ['carBrand', 'carModel', 'year', 'description'];
     for (const field of requiredFields) {
-      if (!formData[field]) return `Complete the field: ${field}`;
+      if (!formData[field]) return `Completați câmpul: ${field}`;
     }
     if (formData.year < 1900 || formData.year > new Date().getFullYear()) {
-      return 'Invalid year';
+      return 'An invalid';
     }
     return null;
   };
@@ -102,7 +102,7 @@ const AppointmentScheduler = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Erorr creating appointment');
+        throw new Error(errorData.error || 'Eroare la programare');
       }
 
       setStep(4);
@@ -118,42 +118,42 @@ const AppointmentScheduler = () => {
       case 1:
         return (
           <div>
-            <h3 className="mb-3">Select the cat, date and time</h3>
+            <h3 className="mb-3">Selectați Mecanic, Data și Ora</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="mb-3">
-              <h5>Available cats</h5>
+              <h5>Mecanici Disponibili</h5>
               <div className="row row-cols-1 g-3">
-                {mechanics.map((mechanic) => (
-                  <div key={mechanic.id} className="col">
-                    <div className={`card ${selectedMechanic?.id === mechanic.id ? 'border-primary' : ''}`}>
+                {cats.map((cat) => (
+                  <div key={cat.id} className="col">
+                    <div className={`card ${selectedCat?.id === cat.id ? 'border-primary' : ''}`}>
                       <div className="card-body">
                         <div className="d-flex align-items-center gap-3">
                           <img 
-                            src={mechanic.image} 
-                            alt={mechanic.name} 
+                            src={cat.image} 
+                            alt={cat.name} 
                             className="rounded-circle" 
                             style={{width: '60px', height: '60px', objectFit: 'cover'}}
                           />
                           <div>
-                            <h5 className="mb-1">{mechanic.name}</h5>
-                            <p className="text-muted mb-1">{mechanic.specialization}</p>
+                            <h5 className="mb-1">{cat.name}</h5>
+                            <p className="text-muted mb-1">{cat.specialization}</p>
                             <div className="d-flex gap-2">
                               <span className="badge bg-info">
-                                Rating: {mechanic.rating}/5
+                                Rating: {cat.rating}/5
                               </span>
                             </div>
                           </div>
                         </div>
                         <button
                           className={`btn btn-sm mt-2 ${
-                            selectedMechanic?.id === mechanic.id 
+                            selectedCat?.id === cat.id 
                             ? 'btn-primary' 
                             : 'btn-outline-primary'
                           }`}
-                          onClick={() => handleMechanicSelect(mechanic)}
+                          onClick={() => handleCatSelect(cat)}
                         >
-                          {selectedMechanic?.id === mechanic.id ? 'Selectat' : 'Selectează'}
+                          {selectedCat?.id === cat.id ? 'Selectat' : 'Selectează'}
                         </button>
                       </div>
                     </div>
@@ -162,7 +162,7 @@ const AppointmentScheduler = () => {
               </div>
             </div>
 
-            {selectedMechanic && (
+            {selectedCat && (
               <>
                 <div className="mb-3">
                   <h5>Selectați Data</h5>
@@ -180,7 +180,7 @@ const AppointmentScheduler = () => {
                   <div className="mb-3">
                     <h5>Ore Disponibile</h5>
                     <div className="d-flex flex-wrap gap-2">
-                      {selectedMechanic.availableSlots.map((time) => (
+                      {selectedCat.availableSlots.map((time) => (
                         <button
                           key={time}
                           className={`btn btn-sm ${
@@ -189,7 +189,7 @@ const AppointmentScheduler = () => {
                             : 'btn-outline-secondary'
                           }`}
                           onClick={() => handleTimeSelect(time)}
-                          disabled={!selectedMechanic.availableSlots.includes(time)}
+                          disabled={!selectedCat.availableSlots.includes(time)}
                         >
                           {time}
                         </button>
@@ -202,7 +202,7 @@ const AppointmentScheduler = () => {
 
             <button
               className="btn btn-primary w-100"
-              disabled={!formData.mechanicId || !formData.date || !formData.time}
+              disabled={!formData.catId || !formData.date || !formData.time}
               onClick={() => {
                 const error = validateStep1();
                 if (error) {
@@ -213,7 +213,7 @@ const AppointmentScheduler = () => {
                 }
               }}
             >
-              Continue
+              Continuă
             </button>
           </div>
         );
@@ -221,7 +221,7 @@ const AppointmentScheduler = () => {
       case 2:
         return (
           <div>
-            <h3 className="mb-3">Appointment details</h3>
+            <h3 className="mb-3">Detalii Vehicul</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="row g-3">
@@ -229,7 +229,7 @@ const AppointmentScheduler = () => {
                 <input
                   type="text"
                   name="carBrand"
-                  placeholder="First name"
+                  placeholder="Marca"
                   value={formData.carBrand}
                   onChange={handleInputChange}
                   className="form-control"
@@ -239,7 +239,7 @@ const AppointmentScheduler = () => {
                 <input
                   type="text"
                   name="carModel"
-                  placeholder="Last name"
+                  placeholder="Model"
                   value={formData.carModel}
                   onChange={handleInputChange}
                   className="form-control"
@@ -249,18 +249,18 @@ const AppointmentScheduler = () => {
                 <input
                   type="number"
                   name="year"
-                  placeholder="Age"
+                  placeholder="An fabricație"
                   value={formData.year}
                   onChange={handleInputChange}
                   className="form-control"
-                  min="18"
-                  max="100"
+                  min="1900"
+                  max={new Date().getFullYear()}
                 />
               </div>
               <div className="col-12">
                 <textarea
                   name="description"
-                  placeholder="Tell us what you want to achieve during your appointment"
+                  placeholder="Descriere problemă..."
                   value={formData.description}
                   onChange={handleInputChange}
                   className="form-control"
@@ -274,7 +274,7 @@ const AppointmentScheduler = () => {
                 className="btn btn-secondary" 
                 onClick={() => setStep(1)}
               >
-                Back
+                Înapoi
               </button>
               <button
                 className="btn btn-primary flex-grow-1"
@@ -288,7 +288,7 @@ const AppointmentScheduler = () => {
                   }
                 }}
               >
-                Continue
+                Continuă
               </button>
             </div>
           </div>
@@ -297,27 +297,27 @@ const AppointmentScheduler = () => {
       case 3:
         return (
           <div>
-            <h3 className="mb-3">Confirm appointment</h3>
+            <h3 className="mb-3">Confirmare Programare</h3>
             {error && <div className="alert alert-danger">{error}</div>}
             
             <div className="card mb-3">
               <div className="card-body">
-                <h5 className="card-title">Appointment details</h5>
+                <h5 className="card-title">Detalii programare</h5>
                 <dl className="row mb-0">
-                  <dt className="col-sm-4">Cat</dt>
-                  <dd className="col-sm-8">{selectedMechanic?.name}</dd>
+                  <dt className="col-sm-4">Mecanic</dt>
+                  <dd className="col-sm-8">{selectedCat?.name}</dd>
 
-                  <dt className="col-sm-4">Date and time</dt>
+                  <dt className="col-sm-4">Dată și oră</dt>
                   <dd className="col-sm-8">
                     {formData.date?.toLocaleDateString()} {formData.time}
                   </dd>
 
-                  <dt className="col-sm-4">Personal information</dt>
+                  <dt className="col-sm-4">Vehicul</dt>
                   <dd className="col-sm-8">
                     {formData.carBrand} {formData.carModel} ({formData.year})
                   </dd>
 
-                  <dt className="col-sm-4">Description</dt>
+                  <dt className="col-sm-4">Descriere</dt>
                   <dd className="col-sm-8">{formData.description}</dd>
                 </dl>
               </div>
@@ -328,14 +328,14 @@ const AppointmentScheduler = () => {
                 className="btn btn-secondary" 
                 onClick={() => setStep(2)}
               >
-                Back
+                Înapoi
               </button>
               <button
                 className="btn btn-success flex-grow-1"
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                {loading ? 'Processing...' : 'Confirm appointment'}
+                {loading ? 'Se procesează...' : 'Confirmă Programarea'}
               </button>
             </div>
           </div>
@@ -345,16 +345,16 @@ const AppointmentScheduler = () => {
         return (
           <div className="text-center">
             <div className="alert alert-success">
-              Appointment
+              Programare realizată cu succes!
             </div>
             <button 
               className="btn btn-primary"
               onClick={() => {
                 setStep(1);
-                setSelectedMechanic(null);
+                setSelectedCat(null);
                 setFormData({
                   ...formData,
-                  mechanicId: null,
+                  catId: null,
                   date: null,
                   time: '',
                   carBrand: '',
@@ -364,7 +364,7 @@ const AppointmentScheduler = () => {
                 });
               }}
             >
-              New appointment
+              Nouă Programare
             </button>
           </div>
         );
@@ -378,7 +378,7 @@ const AppointmentScheduler = () => {
     <div className="container py-4">
       <div className="card shadow-lg mx-auto" style={{ maxWidth: '800px' }}>
         <div className="card-header bg-primary text-white">
-          <h2 className="card-title mb-0">Cat visitation appointment</h2>
+          <h2 className="card-title mb-0">Programare Service Auto</h2>
         </div>
         <div className="card-body p-4">{renderStep()}</div>
       </div>
