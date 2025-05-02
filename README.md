@@ -1,9 +1,18 @@
-# Auto Service Appointment Scheduler
+# Cat Adoption Appointment Scheduler
 
-This app is meant to be used my users and mechanincs.   
-The users can create an account , login , view available mechanics, schedule
-an appointment , view/modify/delete appointments, and get real-time updates on their appointment from the mechanics.   
-The mechanics can view all their appointments, mark them as complete or add updates.
+Fur-Ever Home is a full-stack web application designed to streamline the cat adoption process. Users can log in, browse adoptable cats, and register appointments to meet them. Admins can manage cat listings through a secure dashboard with full CRUD capabilities.
+
+## User Stories
+- Adopter:
+    As a possible pet owner, I want to log in, view available cats, and schedule an appointment to meet one so I can find my perfect companion.
+- Admin:
+    As an admin, I want to add, update, and delete cat listings so the adoption information stays current and accurate.
+
+## Features
+- User authentication
+- View cat profiles with details and images
+- Appointment registration system
+- Admin dashboard (Create, Read, Update, Delete cats)
 
 ## 🛠 Technologies Used
 
@@ -35,6 +44,9 @@ The mechanics can view all their appointments, mark them as complete or add upda
 - **ORM/ODM** 
   - Sequelize
 
+- **Containerization** 
+  - Docker
+
 - **Testing** 
   - Playwright
 
@@ -59,11 +71,12 @@ ReactProj/
 │ ├── App.js  
 │ ├── index.js  
 │ │  
-│  
+│ │ 
 ├── backend  
 │ ├── config/  
 │ ├── models/  
 │ ├── migrations/  
+│ ├── Dockerfile  
 │ └── server.js  
 │  
 ├── .gitignore  
@@ -76,7 +89,7 @@ ReactProj/
 ### Prerequisites
 - Node.js (v16+)
 - npm (v8+)
-- PostgreSQL/MongoDB (if using database)
+- Docker
 
 ### Steps
 
@@ -87,12 +100,20 @@ ReactProj/
 2. **Install dependencies**  
    npm install  
    cd backend; npm install
-3. **Install MySql and configure database**  
-4. **Run server and start the app**  
-   node server.js   
-   npm start
-
-https://github.com/user-attachments/assets/abbba421-9e77-4d92-9d05-d6c8c1e03778
+3. **Create a .env file with the following content**
+    MYSQL_ROOT_PASSWORD=parola
+    MYSQL_DATABASE=proiect_final
+    MYSQL_USER=appuser
+    MYSQL_PASSWORD=parola
+    MYSQL_HOST=db
+    JWT_SECRET=CatSuperSecret123!@#
+    CAT_UNIVERSAL_PASSWORD=cat
+    FRONTEND_URL=http://localhost:3000
+    BACKEND_PORT=5000
+    FRONTEND_PORT=3000
+4. **Open Docker Desktop**  
+5. **Start the app using Docker**  
+   docker-compose up --build
 
 
 
